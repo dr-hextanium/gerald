@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware.subsystem
+package org.firstinspires.ftc.teamcode.hardware
 
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotor
 
@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingServo
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 
 /**
  * Not proud of this, but it does honestly make things easier in the long run.
@@ -50,18 +51,18 @@ object Robot : ISubsystem {
     }
 
     fun init(hw: HardwareMap, telemetry: Telemetry, gamepad1: Gamepad, gamepad2: Gamepad) {
-        this.telemetry = MultipleTelemetry(FtcDashboard.getInstance().telemetry, telemetry)
-        this.hw = hw
+        Robot.telemetry = MultipleTelemetry(FtcDashboard.getInstance().telemetry, telemetry)
+        Robot.hw = hw
 
-        this.hubs = hw.getAll(LynxModule::class.java)
+        hubs = hw.getAll(LynxModule::class.java)
 
-        this.hubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
+        hubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
-        this.voltageSensor = hw.voltageSensor.iterator()
-        this.voltageTimer.reset()
+        voltageSensor = hw.voltageSensor.iterator()
+        voltageTimer.reset()
 
-        this.gamepad1 = GamepadEx(gamepad1)
-        this.gamepad2 = GamepadEx(gamepad2)
+        Robot.gamepad1 = GamepadEx(gamepad1)
+        Robot.gamepad2 = GamepadEx(gamepad2)
 
         scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 
