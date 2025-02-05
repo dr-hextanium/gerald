@@ -1,0 +1,3 @@
+ add voltage compensating pidf class
+do lift
+do turret
