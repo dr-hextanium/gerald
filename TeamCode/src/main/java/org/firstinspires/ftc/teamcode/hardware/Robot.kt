@@ -9,11 +9,16 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.robotcore.hardware.Gamepad
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingServo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
+import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.Bound
+import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
+import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServoRange
+import org.firstinspires.ftc.teamcode.utility.deg
 
 /**
  * Not proud of this, but it does honestly make things easier in the long run.
@@ -47,7 +52,9 @@ object Robot : ISubsystem {
     }
 
     object Servos {
-        fun all() = listOf<CachingServo>()
+        lateinit var turretServo: UsefulServo
+
+        fun all() = listOf<CachingServo>(turretServo)
     }
 
     fun init(hw: HardwareMap, telemetry: Telemetry, gamepad1: Gamepad, gamepad2: Gamepad) {
@@ -55,7 +62,6 @@ object Robot : ISubsystem {
         Robot.hw = hw
 
         hubs = hw.getAll(LynxModule::class.java)
-
         hubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
 
         voltageSensor = hw.voltageSensor.iterator()
@@ -63,6 +69,11 @@ object Robot : ISubsystem {
 
         Robot.gamepad1 = GamepadEx(gamepad1)
         Robot.gamepad2 = GamepadEx(gamepad2)
+
+        Servos.turretServo = UsefulServo(hw["turret"] as Servo, UsefulServoRange(
+            Bound(0.0, 1.0),
+            Bound(0.deg, 355.deg),
+        ))
 
         scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 
