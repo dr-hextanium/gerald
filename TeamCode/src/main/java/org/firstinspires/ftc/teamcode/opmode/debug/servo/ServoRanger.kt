@@ -4,17 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 import org.firstinspires.ftc.teamcode.utility.deg
+import kotlin.math.max
 import kotlin.math.sin
 
-@TeleOp
+@TeleOp(name = "Debug")
 class ServoRanger : BaseTemplate() {
-	var start = 0.0
-	var end = 0.5
+	var start = 0.deg
+	var end = 0.deg
 	var sweep = false
 
-	val servo by lazy { Robot.Servos.turretServo }
+	val servo by lazy { Robot.Servos.turret }
+	val range by lazy { servo.range.radians }
 
-	override fun initialize() {}
+	override fun initialize() {
+		start = range.lower
+		end = range.upper
+	}
 
 	override fun cycle() {
 		if (gamepad1.left_bumper) sweep = false
@@ -32,13 +37,20 @@ class ServoRanger : BaseTemplate() {
 			else -> 0.0
 		}
 
+		start = start.coerceIn(range.lower, range.upper)
+		end = end.coerceIn(range.lower, range.upper)
+
+		end = max(start, end)
+
 		servo.position = when {
 			gamepad1.right_trigger > 0.0 -> servo.convert(gamepad1.right_trigger.toDouble())
 
 			gamepad1.square -> start
 			gamepad1.circle -> end
 
-			else -> if (sweep) sin(runtime) / 2.0 + 0.5 else 0.5
+			else -> servo.convert(
+				if (sweep) sin(runtime) / 2.0 + 0.5 else 0.5
+			)
 		}
 
 		telemetry.addData("position", servo.position)
