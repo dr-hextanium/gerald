@@ -6,22 +6,20 @@ object Names {
 
         object Arm {
             const val left = "la"
-
             const val right = "ra"
         }
 
         object Diffy {
             const val left = "ldif"
-
             const val right = "rdif"
+            const val claw = "cdif"
         }
 
         object Deposit {
             const val left = "ldep"
-
             const val right = "rdep"
-
             const val pivot = "pdep"
+            const val claw = "cdep"
         }
     }
 

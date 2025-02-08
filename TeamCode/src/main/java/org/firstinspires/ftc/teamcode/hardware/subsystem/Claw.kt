@@ -2,25 +2,21 @@ package org.firstinspires.ftc.teamcode.hardware.subsystem
 
 import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.Bound
+import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
+import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServoRange
 
-class Claw(val servo: Servo, val bound: Bound) : ISubsystem {
+class Claw(val servo: UsefulServo, val opened: Double, val closed: Double) : ISubsystem {
+    val range = servo.range.radians
     var position = 0.0
 
-    override fun reset() {
-        servo.scaleRange(bound.lower, bound.upper)
-    }
+    override fun reset() {}
 
-    override fun read() { }
+    override fun read() {}
 
-    override fun update() { }
+    override fun update() {}
 
-    override fun write() { servo.position = position.coerceIn(0.0, 1.0) }
+    override fun write() { servo.position = position.coerceIn(range.lower, range.upper) }
 
-    fun open() { position = OPEN }
-    fun close() { position = CLOSED }
-
-    companion object {
-        const val OPEN = 0.0
-        const val CLOSED = 1.0
-    }
+    fun open() { position = opened }
+    fun close() { position = closed }
 }

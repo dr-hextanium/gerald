@@ -84,12 +84,14 @@ object Robot : ISubsystem {
         object Diffy {
             lateinit var left: UsefulServo
             lateinit var right: UsefulServo
+            lateinit var claw: UsefulServo
         }
 
         object Deposit {
             lateinit var left: UsefulServo
             lateinit var right: UsefulServo
             lateinit var pivot: UsefulServo
+            lateinit var claw: UsefulServo
         }
 
         fun all() = listOf(
@@ -98,9 +100,11 @@ object Robot : ISubsystem {
             Arm.right,
             Diffy.left,
             Diffy.right,
+            Diffy.claw,
             Deposit.left,
             Deposit.right,
-            Deposit.pivot
+            Deposit.pivot,
+            Deposit.claw
         )
     }
 
@@ -115,17 +119,35 @@ object Robot : ISubsystem {
         voltageTimer.reset()
 
         Robot.gamepad1 = GamepadEx(gamepad1)
-        Robot.gamepad2 = GamepadEx(gamepad2);
+        Robot.gamepad2 = GamepadEx(gamepad2)
 
         // These `run` call exist so I can collapse these sections.
         run {
-            Servos.turret = UsefulServo(hw[Names.Servos.turret] as Servo, Bounds.turret, reversed = false)
+            Servos.turret =
+                UsefulServo(hw[Names.Servos.turret] as Servo, Bounds.turret, reversed = false)
 
-            Servos.Arm.left = UsefulServo(hw[Names.Servos.Arm.left] as Servo, Bounds.Arm.left, reversed = false)
-            Servos.Arm.right = UsefulServo(hw[Names.Servos.Arm.right] as Servo, Bounds.Arm.right, reversed = false)
+            Servos.Arm.left =
+                UsefulServo(hw[Names.Servos.Arm.left] as Servo, Bounds.Arm.left, reversed = false)
+            Servos.Arm.right =
+                UsefulServo(hw[Names.Servos.Arm.right] as Servo, Bounds.Arm.right, reversed = false)
 
-            Servos.Diffy.left = UsefulServo(hw[Names.Servos.Diffy.left] as Servo, Bounds.Diffy.left, reversed = false)
-            Servos.Diffy.right = UsefulServo(hw[Names.Servos.Diffy.right] as Servo, Bounds.Diffy.right, reversed = false)
+            Servos.Diffy.left = UsefulServo(
+                hw[Names.Servos.Diffy.left] as Servo,
+                Bounds.Diffy.left,
+                reversed = false
+            )
+
+            Servos.Diffy.right = UsefulServo(
+                hw[Names.Servos.Diffy.right] as Servo,
+                Bounds.Diffy.right,
+                reversed = false
+            )
+
+            Servos.Diffy.claw = UsefulServo(
+                hw[Names.Servos.Diffy.claw] as Servo,
+                Bounds.Diffy.claw,
+                reversed = false
+            )
 
             Servos.Deposit.left = UsefulServo(
                 hw[Names.Servos.Deposit.left] as Servo,
@@ -145,7 +167,11 @@ object Robot : ISubsystem {
                 reversed = false
             )
 
-            Servos.turret = UsefulServo(hw[Names.Servos.turret] as Servo, Bounds.turret, false)
+            Servos.Deposit.claw = UsefulServo(
+                hw[Names.Servos.Deposit.claw] as Servo,
+                Bounds.Deposit.claw,
+                reversed = false
+            )
         }
 
         // Same deal here.

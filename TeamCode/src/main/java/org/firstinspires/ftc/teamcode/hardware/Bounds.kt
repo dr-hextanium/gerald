@@ -38,6 +38,11 @@ object Bounds {
             Bound(0.0, 1.0),
             Bound(0.deg, 355.deg),
         )
+
+        val claw = UsefulServoRange(
+            Bound(0.0, 1.0),
+            Bound(0.deg, 355.deg),
+        )
     }
 
     object Deposit {
@@ -52,6 +57,11 @@ object Bounds {
         )
 
         val pivot = UsefulServoRange(
+            Bound(0.0, 1.0),
+            Bound(0.deg, 355.deg),
+        )
+
+        val claw = UsefulServoRange(
             Bound(0.0, 1.0),
             Bound(0.deg, 355.deg),
         )
