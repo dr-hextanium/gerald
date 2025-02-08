@@ -8,7 +8,7 @@ class UsefulServo(servo: Servo, val range: UsefulServoRange) : CachingServo(serv
     val positions = range.positions.range
     val radians = range.radians.range
 
-    private fun convert(position: Double): Double = radians.convert(position, positions)
+    fun convert(position: Double): Double = radians.convert(position, positions)
 
     fun bound() { servo.scaleRange(range.positions.lower, range.positions.upper) }
 
