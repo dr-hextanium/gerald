@@ -1,9 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
-import com.qualcomm.robotcore.hardware.Servo
-import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.Bound
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
-import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServoRange
 
 class Claw(val servo: UsefulServo, val opened: Double, val closed: Double) : ISubsystem {
     val range = servo.range.radians

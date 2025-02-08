@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.hardware
 
-import dev.frozenmilk.dairy.cachinghardware.CachingDcMotor
-
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
@@ -15,7 +13,6 @@ import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
-import dev.frozenmilk.dairy.cachinghardware.CachingServo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
