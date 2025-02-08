@@ -70,7 +70,7 @@ object Robot : ISubsystem {
         Robot.gamepad1 = GamepadEx(gamepad1)
         Robot.gamepad2 = GamepadEx(gamepad2)
 
-        Servos.turretServo = UsefulServo(hw[Names.turret] as Servo, Bounds.turret)
+        Servos.turretServo = UsefulServo(hw[Names.turret] as Servo, Bounds.turret, false)
 
         scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 
