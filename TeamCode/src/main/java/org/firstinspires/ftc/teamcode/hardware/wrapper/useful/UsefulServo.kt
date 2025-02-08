@@ -1,10 +1,13 @@
 package org.firstinspires.ftc.teamcode.hardware.wrapper.useful
 
 import com.qualcomm.robotcore.hardware.Servo
+import com.qualcomm.robotcore.hardware.Servo.Direction.*
 import dev.frozenmilk.dairy.cachinghardware.CachingServo
 import org.firstinspires.ftc.teamcode.utility.convert
 
-class UsefulServo(servo: Servo, val range: UsefulServoRange) : CachingServo(servo) {
+class UsefulServo(servo: Servo, val range: UsefulServoRange, reversed: Boolean) : CachingServo(servo) {
+    init { servo.direction = if (reversed) REVERSE else FORWARD }
+
     val positions = range.positions.range
     val radians = range.radians.range
 
