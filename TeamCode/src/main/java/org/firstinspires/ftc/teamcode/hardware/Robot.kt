@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 
 /**
@@ -41,7 +42,9 @@ object Robot : ISubsystem {
     var voltage: Double = 0.0
 
     object Subsystems {
-        fun all() = listOf<ISubsystem>()
+        lateinit var lift: Lift
+
+        fun all() = listOf<ISubsystem>(lift)
     }
 
     object Motors {
@@ -187,6 +190,8 @@ object Robot : ISubsystem {
             Motors.Lift.left.direction = DcMotorSimple.Direction.REVERSE
             // The drive motors don't need to be reversed here because the class will handle that.
         }
+
+        Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
 
         scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 

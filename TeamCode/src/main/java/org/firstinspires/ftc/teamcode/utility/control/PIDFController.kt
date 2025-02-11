@@ -66,6 +66,13 @@ open class PIDFController(
         this.threshold = threshold
     }
 
+    fun updateCoefficients(p: Double, i: Double, d: Double, f: Double) {
+        kP = p
+        kI = i
+        kD = d
+        kF = f
+    }
+
     open fun calculate(currentPosition: Double, targetPosition: Double): Double {
         val currentTimeStamp = elapsedTime.milliseconds()
         val timeStep = if (lastTimeStamp > 0.0) (currentTimeStamp - lastTimeStamp) / 1000.0 else 0.0
