@@ -13,7 +13,7 @@ class ServoRanger : BaseTemplate() {
 	var end = 0.deg
 	var sweep = false
 
-	val servo by lazy { Robot.Servos.turret }
+	val servo by lazy { Robot.Servos.Deposit.claw }
 	val range by lazy { servo.range.radians }
 
 	override fun initialize() {

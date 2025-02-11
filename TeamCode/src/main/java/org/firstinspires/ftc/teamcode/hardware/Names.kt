@@ -21,6 +21,11 @@ object Names {
             const val pivot = "pdep"
             const val claw = "cdep"
         }
+
+        object Hang {
+            const val left = "lhang"
+            const val right = "rhang"
+        }
     }
 
     object Motors {

@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.qualcomm.hardware.lynx.LynxModule
+import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Gamepad
@@ -12,6 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.Servo
 import com.qualcomm.robotcore.hardware.VoltageSensor
 import com.qualcomm.robotcore.util.ElapsedTime
+import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
@@ -91,6 +93,11 @@ object Robot : ISubsystem {
             lateinit var claw: UsefulServo
         }
 
+        object Hang {
+            lateinit var left: CachingCRServo
+            lateinit var right: CachingCRServo
+        }
+
         fun all() = listOf(
             turret,
             Arm.left,
@@ -101,7 +108,9 @@ object Robot : ISubsystem {
             Deposit.left,
             Deposit.right,
             Deposit.pivot,
-            Deposit.claw
+            Deposit.claw,
+            Hang.left,
+            Hang.right
         )
     }
 
@@ -126,7 +135,7 @@ object Robot : ISubsystem {
             Servos.Arm.left =
                 UsefulServo(hw[Names.Servos.Arm.left] as Servo, Bounds.Arm.left, reversed = false)
             Servos.Arm.right =
-                UsefulServo(hw[Names.Servos.Arm.right] as Servo, Bounds.Arm.right, reversed = false)
+                UsefulServo(hw[Names.Servos.Arm.right] as Servo, Bounds.Arm.right, reversed = true)
 
             Servos.Diffy.left = UsefulServo(
                 hw[Names.Servos.Diffy.left] as Servo,
@@ -149,7 +158,7 @@ object Robot : ISubsystem {
             Servos.Deposit.left = UsefulServo(
                 hw[Names.Servos.Deposit.left] as Servo,
                 Bounds.Deposit.left,
-                reversed = false
+                reversed = true
             )
 
             Servos.Deposit.right = UsefulServo(
@@ -168,6 +177,14 @@ object Robot : ISubsystem {
                 hw[Names.Servos.Deposit.claw] as Servo,
                 Bounds.Deposit.claw,
                 reversed = false
+            )
+
+            Servos.Hang.left = CachingCRServo(
+                hw[Names.Servos.Hang.left] as CRServo
+            )
+
+            Servos.Hang.right = CachingCRServo(
+                hw[Names.Servos.Hang.right] as CRServo
             )
         }
 
