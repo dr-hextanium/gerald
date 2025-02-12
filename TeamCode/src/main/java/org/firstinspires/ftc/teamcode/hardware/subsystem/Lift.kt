@@ -8,13 +8,14 @@ import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
 
 class Lift(
     val left: CachingDcMotorEx,
-    val right: CachingDcMotorEx,
+    val right: CachingDcMotorEx
 ) : ISubsystem {
     val controller = VCPIDFController(kP, kI, kD, kF, 13.0)
     val motors = listOf(left, right)
 
     var position = 0.0
     var target = 0.0
+    var power = 0.0
 
     override fun reset() {
         motors.forEach {
@@ -34,25 +35,24 @@ class Lift(
     }
 
     override fun read() {
-        position = (left.currentPosition) * inchesPerTick
+        position = (right.currentPosition) * inchesPerTick
     }
 
     override fun update() {
         controller.updateCoefficients(kP, kI, kD, kF)
+        power = controller.calculate(position, target)
     }
 
     override fun write() {
-        val response = controller.calculate(position, target)
-
-        right.power = response
-        left.power = response
+        right.power = power
+        left.power = power
     }
 
     companion object {
-        var kP = 0.05
+        var kP = 0.0015
         var kI = 0.0
-        var kD = 0.0005
-        var kF = 0.0
+        var kD = 0.000
+        var kF = 0.09
 
         const val ticksPerInch = 1.0
         const val inchesPerTick = 1.0 / ticksPerInch

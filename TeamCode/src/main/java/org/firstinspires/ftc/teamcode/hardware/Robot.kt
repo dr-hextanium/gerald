@@ -16,8 +16,11 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Diffy
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Turret
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 
 /**
@@ -45,8 +48,12 @@ object Robot : ISubsystem {
 
     object Subsystems {
         lateinit var lift: Lift
+        lateinit var turret: Turret
+        lateinit var diffy: Diffy
+        lateinit var frontArm: Arm
+        lateinit var backArm: Arm
 
-        fun all() = listOf<ISubsystem>(lift)
+        fun all() = listOf(lift, turret, diffy, frontArm, backArm)
     }
 
     object Motors {
@@ -55,6 +62,7 @@ object Robot : ISubsystem {
         object Lift {
             lateinit var left: CachingDcMotorEx
             lateinit var right: CachingDcMotorEx
+            lateinit var encoder: CachingDcMotorEx
         }
 
         object Drive {
@@ -68,6 +76,7 @@ object Robot : ISubsystem {
             extension,
             Lift.left,
             Lift.right,
+            Lift.encoder,
             Drive.frontRight,
             Drive.frontLeft,
             Drive.backRight,
@@ -78,7 +87,7 @@ object Robot : ISubsystem {
     object Servos {
         lateinit var turret: UsefulServo
 
-        object Arm {
+        object Intake {
             lateinit var left: UsefulServo
             lateinit var right: UsefulServo
         }
@@ -103,8 +112,8 @@ object Robot : ISubsystem {
 
         fun all() = listOf(
             turret,
-            Arm.left,
-            Arm.right,
+            Intake.left,
+            Intake.right,
             Diffy.left,
             Diffy.right,
             Diffy.claw,
@@ -135,15 +144,15 @@ object Robot : ISubsystem {
             Servos.turret =
                 UsefulServo(hw[Names.Servos.turret] as Servo, Bounds.turret, reversed = false)
 
-            Servos.Arm.left =
+            Servos.Intake.left =
                 UsefulServo(hw[Names.Servos.Arm.left] as Servo, Bounds.Arm.left, reversed = false)
-            Servos.Arm.right =
+            Servos.Intake.right =
                 UsefulServo(hw[Names.Servos.Arm.right] as Servo, Bounds.Arm.right, reversed = true)
 
             Servos.Diffy.left = UsefulServo(
                 hw[Names.Servos.Diffy.left] as Servo,
                 Bounds.Diffy.left,
-                reversed = false
+                reversed = true
             )
 
             Servos.Diffy.right = UsefulServo(
@@ -209,6 +218,10 @@ object Robot : ISubsystem {
         }
 
         Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
+        Subsystems.turret = Turret(Servos.turret)
+        Subsystems.diffy = Diffy(Servos.Diffy.left, Servos.Diffy.right)
+        Subsystems.frontArm = Arm(Servos.Intake.left, Servos.Intake.right)
+        Subsystems.backArm = Arm(Servos.Deposit.left, Servos.Deposit.right)
 
         scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 

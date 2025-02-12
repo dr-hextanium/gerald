@@ -5,7 +5,7 @@ import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 import org.firstinspires.ftc.teamcode.utility.curve
 
-@TeleOp(name = "Debug")
+@TeleOp(group = "Debug")
 class MotorDirectionDebugger : BaseTemplate() {
     var power = 0.0
 
