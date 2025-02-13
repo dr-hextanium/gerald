@@ -3,11 +3,11 @@ package org.firstinspires.ftc.teamcode.hardware.subsystem
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 import org.firstinspires.ftc.teamcode.utility.deg
 
-class Turret(val servo: UsefulServo) : ISubsystem {
-    var angle = 0.deg
+class Turret(val servo: UsefulServo, val default: Double = 0.deg) : ISubsystem {
+    var angle = default
 
     override fun reset() {
-        servo.position = 0.deg
+        servo.position = default
     }
 
     override fun read() {}

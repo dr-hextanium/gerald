@@ -17,11 +17,15 @@ import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Diffy
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Turret
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
+import org.firstinspires.ftc.teamcode.utility.deg
 
 /**
  * Not proud of this, but it does honestly make things easier in the long run.
@@ -48,12 +52,10 @@ object Robot : ISubsystem {
 
     object Subsystems {
         lateinit var lift: Lift
-        lateinit var turret: Turret
-        lateinit var diffy: Diffy
-        lateinit var frontArm: Arm
-        lateinit var backArm: Arm
+        lateinit var intake: Intake
+        lateinit var deposit: Deposit
 
-        fun all() = listOf(lift, turret, diffy, frontArm, backArm)
+        fun all() = listOf(lift, intake, deposit)
     }
 
     object Motors {
@@ -218,10 +220,19 @@ object Robot : ISubsystem {
         }
 
         Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
-        Subsystems.turret = Turret(Servos.turret)
-        Subsystems.diffy = Diffy(Servos.Diffy.left, Servos.Diffy.right)
-        Subsystems.frontArm = Arm(Servos.Intake.left, Servos.Intake.right)
-        Subsystems.backArm = Arm(Servos.Deposit.left, Servos.Deposit.right)
+
+        val turret = Turret(Servos.turret, 79.deg)
+        val diffy = Diffy(Servos.Diffy.left, Servos.Diffy.right)
+        val frontArm = Arm(Servos.Intake.left, Servos.Intake.right)
+        val frontClaw = Claw(Servos.Diffy.claw, 0.deg, 0.deg)
+
+        Subsystems.intake = Intake(turret, frontArm, diffy, frontClaw)
+
+        val pivot = Servos.Deposit.pivot
+        val claw = Claw(Servos.Deposit.claw, 0.deg, 0.deg)
+        val arm = Arm(Servos.Deposit.left, Servos.Deposit.right)
+
+        Subsystems.deposit = Deposit(pivot, arm, claw)
 
         scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 

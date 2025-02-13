@@ -12,10 +12,5 @@ class DriverControlled : BaseTemplate() {
 	}
 
 	override fun cycle() {
-		Robot.Subsystems.frontArm.turn((90.0 * gamepad1.left_stick_y).deg)
-		Robot.Subsystems.turret.turn((270.0 * gamepad1.left_stick_x).deg)
-
-		Robot.Subsystems.backArm.turn((300.0 * gamepad1.right_stick_y).deg)
-		Robot.Servos.Deposit.pivot.position = (180.0 * gamepad1.right_stick_x).deg
 	}
 }

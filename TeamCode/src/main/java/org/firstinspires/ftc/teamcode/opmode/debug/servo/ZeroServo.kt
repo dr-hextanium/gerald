@@ -19,6 +19,6 @@ class ZeroServos : BaseTemplate() {
 		val vertical = (355.0) * gamepad1.right_trigger
 		val horizontal = (355.0) * gamepad1.left_trigger
 
-		Robot.Subsystems.diffy.to(Diffy.Kinematics.State(vertical.deg, horizontal.deg))
+		Robot.Subsystems.intake.diffy.to(Diffy.Kinematics.State(vertical.deg, horizontal.deg))
 	}
 }
