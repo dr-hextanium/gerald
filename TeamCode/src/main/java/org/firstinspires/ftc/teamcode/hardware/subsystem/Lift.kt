@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
+import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
 
+@Config
 class Lift(
     val left: CachingDcMotorEx,
     val right: CachingDcMotorEx
@@ -48,16 +50,22 @@ class Lift(
         left.power = power
     }
 
-    companion object {
-        var kP = 0.0015
-        var kI = 0.0
-        var kD = 0.000
-        var kF = 0.09
+    fun busy() = !controller.atSetPoint()
 
-        const val ticksPerInch = 1.0
+    companion object {
+        @JvmField
+        var kP = 0.01
+        @JvmField
+        var kI = 0.0
+        @JvmField
+        var kD = 0.000
+        @JvmField
+        var kF = 0.1
+
+        const val ticksPerInch = 1150.0 / 35.0
         const val inchesPerTick = 1.0 / ticksPerInch
 
         const val MAX_POWER = 0.8
-        const val THRESHOLD = 0.5
+        const val THRESHOLD = 0.005
     }
 }

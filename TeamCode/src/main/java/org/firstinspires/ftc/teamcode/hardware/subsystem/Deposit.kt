@@ -21,11 +21,12 @@ class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw) : ISubsystem
 
 	companion object {
 		object Intake {
-			val INTAKE_SAMPLE = 40.deg
+			val ARM_INTAKE_SAMPLE = 48.deg
 		}
 
 		object Deposit {
-			val GRAB_SPECIMEN = 340.deg
+			val ARM_GRAB_SPECIMEN = 340.deg
+			val PIVOT_GRAB_SPECIMEN = 7.deg
 		}
 	}
 }

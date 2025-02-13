@@ -73,13 +73,15 @@ open class PIDFController(
         kF = f
     }
 
+    fun atSetPoint() = abs(currentError) <= threshold
+
     open fun calculate(currentPosition: Double, targetPosition: Double): Double {
         val currentTimeStamp = elapsedTime.milliseconds()
         val timeStep = if (lastTimeStamp > 0.0) (currentTimeStamp - lastTimeStamp) / 1000.0 else 0.0
 
         currentError = targetPosition - currentPosition
 
-        if (abs(currentError) <= threshold) return 0.0
+        if (atSetPoint()) return kF
 
         val p = kP * currentError
 

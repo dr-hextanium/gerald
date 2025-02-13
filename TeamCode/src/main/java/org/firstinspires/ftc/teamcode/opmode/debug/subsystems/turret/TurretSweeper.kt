@@ -7,7 +7,6 @@ import org.firstinspires.ftc.teamcode.utility.deg
 import kotlin.math.max
 import kotlin.math.sin
 
-@TeleOp(name = "Debug")
 class TurretSweeper : BaseTemplate() {
 	var start = 0.deg
 	var end = 0.deg
