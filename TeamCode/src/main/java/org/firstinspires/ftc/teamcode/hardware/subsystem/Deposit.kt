@@ -25,8 +25,11 @@ class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw) : ISubsystem
 		}
 
 		object Deposit {
-			val ARM_GRAB_SPECIMEN = 340.deg
+			val ARM_GRAB_SPECIMEN = 355.deg
 			val PIVOT_GRAB_SPECIMEN = 7.deg
+
+			val ARM_SCORE_SPECIMEN = 120.deg
+			val PIVOT_SCORE_SPECIMEN = 20.deg
 		}
 	}
 }

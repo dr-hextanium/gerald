@@ -1,23 +1,38 @@
 package org.firstinspires.ftc.teamcode.opmode.debug
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.hardware.Robot
-import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
+import com.qualcomm.robotcore.hardware.CRServo
+import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
+import org.firstinspires.ftc.teamcode.hardware.Names
 
 @TeleOp
-class HangTest : BaseTemplate() {
-	val leftHang by lazy { Robot.Servos.Hang.left }
-	val rightHang by lazy { Robot.Servos.Hang.right }
+class HangTest : OpMode() {
+	val left1 by lazy { CachingCRServo(hardwareMap[Names.Servos.Hang.left1] as CRServo) }
+	val left2 by lazy { CachingCRServo(hardwareMap[Names.Servos.Hang.left2] as CRServo) }
+	val right1 by lazy { CachingCRServo(hardwareMap[Names.Servos.Hang.right1] as CRServo) }
+	val right2 by lazy { CachingCRServo(hardwareMap[Names.Servos.Hang.right2] as CRServo) }
 
-	override fun initialize() { }
+	override fun init() { }
 
-	override fun cycle() {
-		if(gamepad1.dpad_up) leftHang.power = 1.0
-		else if(gamepad1.dpad_down) leftHang.power = -1.0
-		else leftHang.power = 0.0
-
-		if(gamepad1.y) rightHang.power = 1.0
-		else if(gamepad1.a) rightHang.power = -1.0
-		else rightHang.power = 0.0
+	override fun loop() {
+		if(gamepad1.dpad_left) {
+			left1.power = 1.0
+			left2.power = 1.0
+			right1.power = -1.0
+			right2.power = -1.0
+		}
+		else if(gamepad1.dpad_right) {
+			left1.power = -1.0
+			left2.power = -1.0
+			right1.power = 1.0
+			right2.power = 1.0
+		}
+		else {
+			left1.power = 0.0
+			left2.power = 0.0
+			right1.power = 0.0
+			right2.power = 0.0
+		}
 	}
 }

@@ -23,8 +23,10 @@ object Names {
         }
 
         object Hang {
-            const val left = "lhang"
-            const val right = "rhang"
+            const val left1 = "lhang1"
+            const val left2 = "lhang2"
+            const val right1 = "rhang1"
+            const val right2 = "rhang2"
         }
     }
 

@@ -6,7 +6,6 @@ import org.firstinspires.ftc.teamcode.utility.deg
 class Arm(val left: UsefulServo, val right: UsefulServo) : ISubsystem {
 	var angle = 0.deg
 
-
 	override fun reset() {
 		left.bound()
 		right.bound()

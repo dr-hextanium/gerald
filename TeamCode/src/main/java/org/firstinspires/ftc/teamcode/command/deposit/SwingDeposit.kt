@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.command.intake
+package org.firstinspires.ftc.teamcode.command.deposit
 
 import org.firstinspires.ftc.teamcode.command.CommandTemplate
 import org.firstinspires.ftc.teamcode.hardware.Robot
 
-class DropIntake(val angle: Double) : CommandTemplate() {
-	override fun initialize() { Robot.Subsystems.intake.dropTo(angle) }
+class SwingDeposit(val angle: Double) : CommandTemplate() {
+	override fun initialize() { Robot.Subsystems.deposit.raiseTo(angle) }
 
 	override fun execute() {}
 

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
+import kotlin.math.sign
 
 @Config
 class Lift(
@@ -42,7 +43,10 @@ class Lift(
 
     override fun update() {
         controller.updateCoefficients(kP, kI, kD, kF)
-        power = controller.calculate(position, target)
+
+        val output = controller.calculate(position, target)
+
+        power = if (output.sign < 0) 0.0 else output
     }
 
     override fun write() {
@@ -54,18 +58,22 @@ class Lift(
 
     companion object {
         @JvmField
-        var kP = 0.01
+        var kP = 0.08
         @JvmField
-        var kI = 0.0
+        var kI = 0.00
         @JvmField
         var kD = 0.000
         @JvmField
-        var kF = 0.1
+        var kF = 0.05
 
         const val ticksPerInch = 1150.0 / 35.0
         const val inchesPerTick = 1.0 / ticksPerInch
 
         const val MAX_POWER = 0.8
         const val THRESHOLD = 0.005
+
+        const val GRAB_SPEC = 2.5 //inches
+        const val SPEC_CLEARANCE_HEIGHT = 7.0 //inches
+        const val SCORE_SPEC = 15.0
     }
 }

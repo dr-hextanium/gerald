@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
+import org.firstinspires.ftc.teamcode.utility.deg
+
 class Intake(val turret: Turret, val arm: Arm, val diffy: Diffy, val claw: Claw) : ISubsystem {
 	val all = listOf(turret, arm, diffy, claw)
 
@@ -19,4 +21,12 @@ class Intake(val turret: Turret, val arm: Arm, val diffy: Diffy, val claw: Claw)
 	fun open() = claw.open()
 
 	fun close() = claw.close()
+
+	companion object {
+		val INTERMEDIATE_ARM_ANGLE = 60.deg
+		val INTERMEDIATE_INTAKE_PITCH = 305.deg
+
+		val GRAB_ARM_ANGLE = 44.deg
+		val GRAB_INTAKE_PITCH = 292.deg
+	}
 }

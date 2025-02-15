@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.utility.curve
 class MotorDirectionDebugger : BaseTemplate() {
     var power = 0.0
 
-    val motor by lazy { Robot.Motors.all().first() }
+    val motor by lazy { Robot.Motors.extension }
 
     override fun initialize() { motor.power = 0.0 }
 

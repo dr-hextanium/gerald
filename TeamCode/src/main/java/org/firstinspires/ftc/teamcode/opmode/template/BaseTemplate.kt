@@ -5,6 +5,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.hardware.Robot
+import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
+import org.firstinspires.ftc.teamcode.utility.deg
 
 abstract class BaseTemplate : OpMode() {
 	val primary by lazy { Robot.gamepad1 }
@@ -16,7 +18,18 @@ abstract class BaseTemplate : OpMode() {
 		telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 		Robot.init(hardwareMap, telemetry, gamepad1, gamepad2)
 
+		Subsystems.intake.claw.manual(4.5.deg)
+		Subsystems.intake.twist((-45).deg)
+		Subsystems.intake.pitch(260.deg)
+		Subsystems.intake.dropTo(60.deg)
+		Subsystems.intake.turnTo(215.deg)
+		Subsystems.deposit.raiseTo(0.deg)
+		Subsystems.deposit.pitchTo(120.deg)
+		Subsystems.deposit.claw.manual(1.5.deg)
+
 		initialize()
+
+		Robot.write()
 	}
 
 	override fun loop() {
