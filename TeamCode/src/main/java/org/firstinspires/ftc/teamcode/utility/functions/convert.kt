@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.utility
+package org.firstinspires.ftc.teamcode.utility.functions
 
 fun ClosedRange<Int>.convert(number: Int, target: ClosedRange<Int>): Int {
     val ratio = number.toDouble() / (endInclusive - start)

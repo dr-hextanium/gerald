@@ -4,7 +4,7 @@ import kotlin.math.abs
 import kotlin.math.sign
 import kotlin.math.sqrt
 
-class SquController(
+class SquIDController(
     kP: Double,
     kF: Double,
     tunedAt: Double

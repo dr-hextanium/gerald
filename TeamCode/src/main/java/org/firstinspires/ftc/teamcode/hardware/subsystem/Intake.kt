@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class Intake(val turret: Turret, val arm: Arm, val diffy: Diffy, val claw: Claw) : ISubsystem {
 	val all = listOf(turret, arm, diffy, claw)

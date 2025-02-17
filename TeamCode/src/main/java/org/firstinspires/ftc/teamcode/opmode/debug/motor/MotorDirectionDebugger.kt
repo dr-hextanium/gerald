@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.debug.motor
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
-import org.firstinspires.ftc.teamcode.utility.curve
+import org.firstinspires.ftc.teamcode.utility.functions.curve
 
 @TeleOp(group = "Debug")
 class MotorDirectionDebugger : BaseTemplate() {

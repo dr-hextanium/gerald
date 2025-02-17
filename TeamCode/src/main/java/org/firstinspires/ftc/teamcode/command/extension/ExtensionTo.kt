@@ -6,19 +6,17 @@ import org.firstinspires.ftc.teamcode.command.CommandTemplate
 import org.firstinspires.ftc.teamcode.command.lift.LiftTo
 import org.firstinspires.ftc.teamcode.hardware.Robot
 
-class ExtensionTo(val position: Double) : CommandTemplate() {
+class ExtensionTo(val position: Double, val tolerance: Double) : CommandTemplate() {
 	val extension = Robot.Subsystems.extension
 
-	override fun initialize() {
-		extension.target = position
-	}
+	override fun initialize() { extension.target = position }
 
 	override fun execute() { }
 
-	override fun isFinished() = !extension.busy()
+	override fun isFinished() = extension.within(tolerance)
 }
 
-class ExtensionToUntil(position: Double, time: Long = 1000) : ParallelRaceGroup(
-	ExtensionTo(position),
+class ExtensionToUntil(position: Double, tolerance: Double = 0.02, time: Long = 1000) : ParallelRaceGroup(
+	ExtensionTo(position, tolerance),
 	WaitCommand(time)
 )

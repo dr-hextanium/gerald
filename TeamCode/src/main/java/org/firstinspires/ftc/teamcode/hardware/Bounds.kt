@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware
 
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.Bound
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServoRange
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 /*
  * Unlike our system last robot, these bounds probably won't ever need to actually change.

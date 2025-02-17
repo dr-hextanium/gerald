@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.utility
+package org.firstinspires.ftc.teamcode.utility.functions
 
 import kotlin.math.pow
 

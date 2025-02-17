@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
 
 class ScoreSpecimen : SequentialCommandGroup(
-	LiftToUntil(Lift.SCORE_SPEC, 500),
+	LiftToUntil(Lift.SCORE_SPEC, time  = 500),
 	OpenDeposit(),
 	WaitCommand(500),
 	PrepGrabbing(intake = false)

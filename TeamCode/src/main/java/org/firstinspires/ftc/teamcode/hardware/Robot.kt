@@ -3,10 +3,9 @@ package org.firstinspires.ftc.teamcode.hardware
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
-import com.arcrobotics.ftclib.drivebase.MecanumDrive
 import com.arcrobotics.ftclib.gamepad.GamepadEx
-import com.arcrobotics.ftclib.hardware.motors.Motor
 import com.qualcomm.hardware.lynx.LynxModule
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
@@ -18,6 +17,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
+import org.firstinspires.ftc.teamcode.hardware.drive.CachingMecanumDrive
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
@@ -27,9 +27,11 @@ import org.firstinspires.ftc.teamcode.hardware.subsystem.Hang
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
+import org.firstinspires.ftc.teamcode.hardware.subsystem.OTOS
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Turret
+import org.firstinspires.ftc.teamcode.hardware.wrapper.SparkFunOTOSCorrected
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 /**
  * Not proud of this, but it does honestly make things easier in the long run.
@@ -54,15 +56,20 @@ object Robot : ISubsystem {
 	var voltageTimer = ElapsedTime()
 	var voltage: Double = 0.0
 
+	val pose: Pose2D
+		get() = Subsystems.odometry.pose
+
 	object Subsystems {
+		lateinit var drive: CachingMecanumDrive
+		lateinit var odometry: OTOS
+
 		lateinit var lift: Lift
 		lateinit var extension: Extension
 		lateinit var intake: Intake
 		lateinit var deposit: Deposit
 		lateinit var hang: Hang
-		lateinit var drive: MecanumDrive
 
-		fun all() = listOf(lift, intake, hang, deposit, extension)
+		fun all() = listOf(lift, intake, hang, deposit, extension, odometry)
 	}
 
 	object Motors {
@@ -249,12 +256,15 @@ object Robot : ISubsystem {
 			// The drive motors don't need to be reversed here because the class will handle that.
 		}
 
-//		Subsystems.drive = MecanumDrive(
-//			Motor(Motors.Drive.frontLeft),
-//			Motor(Motors.Drive.frontRight),
-//			Motor(Motors.Drive.backLeft),
-//			Motor(Motors.Drive.backRight)
-//		)
+		Subsystems.drive = CachingMecanumDrive(
+			true,
+			Motors.Drive.frontLeft,
+			Motors.Drive.frontRight,
+			Motors.Drive.backLeft,
+			Motors.Drive.backRight
+		)
+
+		Subsystems.odometry = OTOS(hw[Names.I2C.otos] as SparkFunOTOSCorrected)
 
 		Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
 		Subsystems.extension = Extension(Motors.extension)
@@ -262,19 +272,16 @@ object Robot : ISubsystem {
 		val turret = Turret(Servos.turret, 79.deg)
 		val diffy = Diffy(Servos.Diffy.left, Servos.Diffy.right)
 		val frontArm = Arm(Servos.Intake.left, Servos.Intake.right)
-		val frontClaw =
-			Claw(Servos.Diffy.claw, Claw.Companion.Intake.OPEN, Claw.Companion.Intake.CLOSE)
+		val frontClaw = Claw(Servos.Diffy.claw, Claw.Companion.Intake.OPEN, Claw.Companion.Intake.CLOSE)
 
 		Subsystems.intake = Intake(turret, frontArm, diffy, frontClaw)
 
 		val pivot = Servos.Deposit.pivot
-		val claw =
-			Claw(Servos.Deposit.claw, Claw.Companion.Deposit.OPEN, Claw.Companion.Deposit.CLOSE)
+		val claw = Claw(Servos.Deposit.claw, Claw.Companion.Deposit.OPEN, Claw.Companion.Deposit.CLOSE)
 		val arm = Arm(Servos.Deposit.left, Servos.Deposit.right)
 
 		Subsystems.deposit = Deposit(pivot, arm, claw)
-		Subsystems.hang =
-			Hang(Servos.Hang.left1, Servos.Hang.left2, Servos.Hang.right1, Servos.Hang.right2)
+		Subsystems.hang = Hang(Servos.Hang.left1, Servos.Hang.left2, Servos.Hang.right1, Servos.Hang.right2)
 
 		scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
 

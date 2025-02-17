@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.command.intake.SwingIntake
 import org.firstinspires.ftc.teamcode.command.intake.PitchIntake
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntake
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class IntakeSample : SequentialCommandGroup(
 	SwingIntake(Intake.GRAB_ARM_ANGLE),

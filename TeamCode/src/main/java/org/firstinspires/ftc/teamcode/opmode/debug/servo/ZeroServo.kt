@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Diffy
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 @TeleOp
 class ZeroServos : BaseTemplate() {

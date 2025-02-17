@@ -1,3 +1,5 @@
 package org.firstinspires.ftc.teamcode.hardware
 
-object Globals
+object Globals {
+    var AUTO = false
+}

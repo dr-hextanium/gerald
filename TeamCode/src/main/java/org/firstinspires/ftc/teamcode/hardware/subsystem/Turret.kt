@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class Turret(val servo: UsefulServo, val default: Double = 0.deg) : ISubsystem {
     var angle = default

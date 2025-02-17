@@ -2,17 +2,23 @@ package org.firstinspires.ftc.teamcode.opmode.template
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
-import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 abstract class BaseTemplate : OpMode() {
 	val primary by lazy { Robot.gamepad1 }
 	val secondary by lazy { Robot.gamepad2 }
 
-	val timer = ElapsedTime()
+	var last = 0.0
+
+	private fun logLoopTime() {
+		val now = System.nanoTime().toDouble()
+		telemetry.addData("loop time (hz)", 1e9 / (now - last))
+		last = now
+	}
 
 	override fun init() {
 		telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
@@ -43,9 +49,20 @@ abstract class BaseTemplate : OpMode() {
 		Robot.scheduler.run()
 
 		Robot.write()
+
+		logLoopTime()
+
+		telemetry.update()
 	}
 
 	abstract fun initialize()
 
 	abstract fun cycle()
+
+	companion object {
+		val CROSS = GamepadKeys.Button.A
+		val CIRCLE = GamepadKeys.Button.B
+		val TRIANGLE = GamepadKeys.Button.Y
+		val SQUARE = GamepadKeys.Button.X
+	}
 }

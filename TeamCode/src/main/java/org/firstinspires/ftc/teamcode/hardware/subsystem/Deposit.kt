@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw) : ISubsystem {
 	val all = listOf(arm, claw)

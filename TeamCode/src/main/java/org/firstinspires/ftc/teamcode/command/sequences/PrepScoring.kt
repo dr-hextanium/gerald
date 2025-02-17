@@ -17,7 +17,7 @@ class PrepScoring : SequentialCommandGroup(
 	CloseDeposit(),
 	WaitCommand(200),
 
-	LiftToUntil(Lift.SPEC_CLEARANCE_HEIGHT, 250),
+	LiftToUntil(Lift.SPEC_CLEARANCE_HEIGHT, time = 250),
 
 	ParallelCommandGroup(
 		SwingDeposit(Deposit.Companion.Deposit.ARM_SCORE_SPECIMEN),

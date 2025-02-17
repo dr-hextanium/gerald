@@ -1,13 +1,13 @@
-package org.firstinspires.ftc.teamcode.opmode.debug.tuner
+package org.firstinspires.ftc.teamcode.opmode.debug
 
 import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 @Config
-@TeleOp
+@TeleOp(group = "Debug")
 class RobotRigger : BaseTemplate() {
     val lift by lazy { Robot.Subsystems.lift }
     val extension by lazy { Robot.Subsystems.extension }

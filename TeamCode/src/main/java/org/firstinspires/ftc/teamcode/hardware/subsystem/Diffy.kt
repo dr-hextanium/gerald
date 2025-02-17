@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware.subsystem
 
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Diffy.Kinematics.State
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class Diffy(val left: UsefulServo, val right: UsefulServo) : ISubsystem {
     var state = State(0.deg, 0.deg)

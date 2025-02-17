@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware.subsystem
 
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
-import org.firstinspires.ftc.teamcode.utility.deg
 
 class Claw(val servo: UsefulServo, val opened: Double, val closed: Double) : ISubsystem {
 	var position = 0.0
@@ -41,7 +40,7 @@ class Claw(val servo: UsefulServo, val opened: Double, val closed: Double) : ISu
 		}
 
 		object Intake {
-			val OPEN = 4.5
+			val OPEN = 5.0
 			val CLOSE = 6.0
 		}
 	}

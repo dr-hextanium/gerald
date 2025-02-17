@@ -9,68 +9,40 @@ open class PIDFController(
     var kP: Double,
     var kI: Double,
     var kD: Double,
-    var kF: Double
+    var kF: Double,
+    var alpha: Double = 0.8
 ) {
+    private var elapsedTime = ElapsedTime()
+
     private var currentError = 0.0
     private var lastError = 0.0
     private var integralSum = 0.0
-
     private var lastTimeStamp = 0.0
-    private var elapsedTime = ElapsedTime()
+    private var lastD = 0.0
 
-    var maxOutput: Double = NaN
-    var minOutput: Double = NaN
-
+    var maxOutput = NaN
+    var minOutput = NaN
     var threshold = 0.0
 
-    constructor(
-        kP: Double,
-        kI: Double,
-        kD: Double,
-        kF: Double,
-        maxOutput: Double,
-        minOutput: Double
-    ) : this(kP, kI, kD, kF) {
-        this.maxOutput = maxOutput
+    private val maxIntegral = 10.0
+
+    fun clamp(minOutput: Double, maxOutput: Double): PIDFController {
         this.minOutput = minOutput
+        this.maxOutput = maxOutput
+        return this
     }
 
-    constructor(
-        kP: Double,
-        kI: Double,
-        kD: Double,
-        kF: Double,
-        maxOutput: Double,
-        minOutput: Double,
-        threshold: Double,
-    ) : this(kP, kI, kD, kF) {
-        this.maxOutput = maxOutput
-        this.minOutput = minOutput
+    fun threshold(threshold: Double): PIDFController {
         this.threshold = threshold
+        return this
     }
 
-    constructor(
-        kP: Double,
-        kI: Double,
-        kD: Double,
-        kF: Double,
-        maxOutput: Double
-    ) : this(kP, kI, kD, kF, maxOutput, -maxOutput)
-
-    fun clamp(minOutput: Double, maxOutput: Double) {
-        this.minOutput = minOutput
-        this.maxOutput = maxOutput
-    }
-
-    fun threshold(threshold: Double) {
-        this.threshold = threshold
-    }
-
-    fun updateCoefficients(p: Double, i: Double, d: Double, f: Double) {
+    fun updateCoefficients(p: Double, i: Double, d: Double, f: Double, a: Double = 0.8) {
         kP = p
         kI = i
         kD = d
         kF = f
+        alpha = a
     }
 
     fun atSetPoint() = abs(currentError) <= threshold
@@ -81,14 +53,20 @@ open class PIDFController(
 
         currentError = targetPosition - currentPosition
 
-        if (atSetPoint()) return kF
+        if (atSetPoint()) {
+            integralSum = 0.0
+            return kF
+        }
 
         val p = kP * currentError
 
         if (timeStep > 0) integralSum += currentError * timeStep
+        integralSum = integralSum.coerceIn(-maxIntegral, maxIntegral)
+
         val i = kI * integralSum
 
-        val d = if (timeStep > 0) kD * (currentError - lastError) / timeStep else 0.0
+        val rawD = if (timeStep > 0) (currentError - lastError) / timeStep else 0.0
+        val d = kD * (alpha * rawD + (1.0 - alpha) * lastD)
 
         val f = kF
 
@@ -96,10 +74,15 @@ open class PIDFController(
 
         if (!minOutput.isNaN() && !maxOutput.isNaN()) {
             output = output.coerceIn(minOutput, maxOutput)
+
+            if ((output == maxOutput && currentError > 0) || (output == minOutput && currentError < 0)) {
+                integralSum *= 0.9
+            }
         }
 
         lastError = currentError
         lastTimeStamp = currentTimeStamp
+        lastD = rawD
 
         return output
     }

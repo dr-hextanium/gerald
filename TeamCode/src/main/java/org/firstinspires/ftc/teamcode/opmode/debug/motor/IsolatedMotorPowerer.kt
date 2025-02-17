@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.opmode.debug.motor
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotorEx
-import org.firstinspires.ftc.teamcode.utility.curve
+import org.firstinspires.ftc.teamcode.utility.functions.curve
 
 @TeleOp
 class IsolatedMotorPowerer : OpMode() {

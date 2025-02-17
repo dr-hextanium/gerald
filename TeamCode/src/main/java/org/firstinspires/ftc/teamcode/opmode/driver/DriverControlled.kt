@@ -9,21 +9,21 @@ import org.firstinspires.ftc.teamcode.command.hang.RetractHang
 import org.firstinspires.ftc.teamcode.command.hang.StopHang
 import org.firstinspires.ftc.teamcode.command.intake.ToggleIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
-import org.firstinspires.ftc.teamcode.command.intake.TwistIntake
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntakeRelatively
 import org.firstinspires.ftc.teamcode.command.sequences.CrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
 import org.firstinspires.ftc.teamcode.command.sequences.SquareBind
+import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
-import org.firstinspires.ftc.teamcode.utility.deg
+import org.firstinspires.ftc.teamcode.utility.functions.curve
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 @TeleOp
 class DriverControlled : BaseTemplate() {
 	override fun initialize() {
-		val primary = Robot.gamepad1
-		val secondary = Robot.gamepad2
+		Globals.AUTO = false
 
 		GamepadButton(primary, SQUARE)
 			.whenPressed(SquareBind())
@@ -69,14 +69,13 @@ class DriverControlled : BaseTemplate() {
 	}
 
 	override fun cycle() {
-		telemetry.addData("diffy state", Subsystems.intake.diffy.state)
-		telemetry.addData("extension target", Subsystems.extension.target)
-	}
+		val heading = Subsystems.odometry.getDegrees()
 
-	companion object {
-		val CROSS = GamepadKeys.Button.A
-		val CIRCLE = GamepadKeys.Button.B
-		val TRIANGLE = GamepadKeys.Button.Y
-		val SQUARE = GamepadKeys.Button.X
+		Subsystems.drive.driveFieldCentric(
+			-curve(Robot.gamepad1.leftX),
+			-curve(Robot.gamepad1.leftY),
+			-curve(Robot.gamepad1.rightX),
+			heading
+		)
 	}
 }

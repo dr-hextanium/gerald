@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
+import kotlin.math.abs
 
 @Config
 class Extension(
@@ -34,7 +35,7 @@ class Extension(
 	}
 
 	override fun update() {
-		controller.updateCoefficients(kP, kI, kD, kF)
+		controller.updateCoefficients(kP, kI, kD, kF, alpha)
 
 		power = controller.calculate(position, target)
 	}
@@ -45,6 +46,8 @@ class Extension(
 
 	fun busy() = !controller.atSetPoint()
 
+	fun within(tolerance: Double) = abs(target - position) <= tolerance
+
 	companion object {
 		@JvmField
 		var kP = 0.07
@@ -54,11 +57,13 @@ class Extension(
 		var kD = 0.000
 		@JvmField
 		var kF = 0.01
+		@JvmField
+		var alpha = 0.8
 
 		const val ticksPerInch = 600.0 / 18.5
 		const val inchesPerTick = 1.0 / ticksPerInch
 
 		const val MAX_POWER = 0.8
-		const val THRESHOLD = 0.005
+		const val THRESHOLD = 0.01
 	}
 }

@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.hardware
 
 object Names {
+    object I2C {
+        const val otos = "otos"
+    }
+
     object Servos {
         const val turret = "t"
 
