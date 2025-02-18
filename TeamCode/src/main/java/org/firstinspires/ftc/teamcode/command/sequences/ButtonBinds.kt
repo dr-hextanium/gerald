@@ -7,13 +7,13 @@ import org.firstinspires.ftc.teamcode.command.sequences.specimen.ScoreSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 import org.firstinspires.ftc.teamcode.hardware.Robot
 
-class SquareBind : ConditionalCommand(
+class PrimarySquareBind : ConditionalCommand(
 	PrepIntakeSample(),
 	PrepGrabbingSpecimen(),
 	{ Robot.Subsystems.extension.target == 0.0 }
 )
 
-class CrossBind : ConditionalCommand(
+class PrimaryCrossBind : ConditionalCommand(
 	ScoreSpecimen(),
 	PrepScoringSpecimen(),
 	{ Robot.Subsystems.deposit.arm.angle == Deposit.Arm.SCORE_SPECIMEN }

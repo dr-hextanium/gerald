@@ -10,9 +10,9 @@ import org.firstinspires.ftc.teamcode.command.hang.StopHang
 import org.firstinspires.ftc.teamcode.command.intake.ToggleIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntakeRelatively
-import org.firstinspires.ftc.teamcode.command.sequences.CrossBind
+import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
-import org.firstinspires.ftc.teamcode.command.sequences.SquareBind
+import org.firstinspires.ftc.teamcode.command.sequences.PrimarySquareBind
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
@@ -26,13 +26,13 @@ class DriverControlled : BaseTemplate() {
 		Globals.AUTO = false
 
 		GamepadButton(primary, SQUARE)
-			.whenPressed(SquareBind())
+			.whenPressed(PrimarySquareBind())
 
 		GamepadButton(primary, TRIANGLE)
 			.whenPressed(IntakeSample())
 
 		GamepadButton(primary, CROSS)
-			.whenPressed(CrossBind())
+			.whenPressed(PrimaryCrossBind())
 
 		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
 			.whenPressed(ToggleIntake())
@@ -53,8 +53,6 @@ class DriverControlled : BaseTemplate() {
 
 		GamepadButton(primary, GamepadKeys.Button.RIGHT_BUMPER)
 			.whenPressed(TwistIntakeRelatively(30.0.deg))
-
-		GamepadButton(primary, CIRCLE).whenPressed(TurnTurret(79.deg))
 	}
 
 	override fun init_loop() {
