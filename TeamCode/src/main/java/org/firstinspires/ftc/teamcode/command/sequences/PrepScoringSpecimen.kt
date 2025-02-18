@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
 import org.firstinspires.ftc.teamcode.hardware.Positions.Lift
 import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 
-class PrepScoring : SequentialCommandGroup(
+class PrepScoringSpecimen : SequentialCommandGroup(
 	OpenIntake(),
 	WaitCommand(100),
 	CloseDeposit(),

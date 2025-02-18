@@ -19,7 +19,7 @@ import org.firstinspires.ftc.teamcode.hardware.Positions.Intake.Claw.INTERMEDIAT
 import org.firstinspires.ftc.teamcode.hardware.Positions.Intake.Turret.ASIDE
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
-class PrepGrabbing(intake: Boolean = true) : SequentialCommandGroup(
+class PrepGrabbingSpecimen(intake: Boolean = true) : SequentialCommandGroup(
 	PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
 	SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
 	LiftToUntil(Positions.Lift.GRAB_SPECIMEN, time = 250),

@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.hardware.Positions.Lift
 import org.firstinspires.ftc.teamcode.hardware.Positions.Intake
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
-class ToIntake : SequentialCommandGroup(
+class PrepIntakeSample : SequentialCommandGroup(
 	SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
 	PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
 	LiftToUntil(Lift.HIGH_CHAMBER, time = 300),

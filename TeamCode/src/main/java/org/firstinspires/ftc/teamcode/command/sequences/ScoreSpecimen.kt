@@ -10,5 +10,5 @@ class ScoreSpecimen : SequentialCommandGroup(
 	LiftToUntil(Positions.Lift.HIGH_CHAMBER, time = 500),
 	OpenDeposit(),
 	WaitCommand(500),
-	PrepGrabbing(intake = false)
+	PrepGrabbingSpecimen(intake = false)
 )
