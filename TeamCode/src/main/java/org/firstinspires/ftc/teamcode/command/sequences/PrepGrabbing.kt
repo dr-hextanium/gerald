@@ -12,20 +12,22 @@ import org.firstinspires.ftc.teamcode.command.intake.PitchIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntake
 import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
+import org.firstinspires.ftc.teamcode.hardware.Positions
+import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
+import org.firstinspires.ftc.teamcode.hardware.Positions.Intake.Arm.INTERMEDIATE_ANGLE
+import org.firstinspires.ftc.teamcode.hardware.Positions.Intake.Claw.INTERMEDIATE_PITCH
+import org.firstinspires.ftc.teamcode.hardware.Positions.Intake.Turret.ASIDE
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class PrepGrabbing(intake: Boolean = true) : SequentialCommandGroup(
-	PivotDeposit(Deposit.Companion.Deposit.PIVOT_GRAB_SPECIMEN),
-	SwingDeposit(Deposit.Companion.Deposit.ARM_GRAB_SPECIMEN),
-	LiftToUntil(Lift.GRAB_SPEC, time = 250),
+	PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
+	SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
+	LiftToUntil(Positions.Lift.GRAB_SPECIMEN, time = 250),
 
 	if (intake) {
 		SequentialCommandGroup(
-			SwingIntake(Intake.INTERMEDIATE_ARM_ANGLE),
-			PitchIntake(Intake.INTERMEDIATE_INTAKE_PITCH),
+			SwingIntake(INTERMEDIATE_ANGLE),
+			PitchIntake(INTERMEDIATE_PITCH),
 			TwistIntake(0.0.deg),
 			WaitCommand(200),
 
@@ -36,9 +38,10 @@ class PrepGrabbing(intake: Boolean = true) : SequentialCommandGroup(
 			PitchIntake(260.deg),
 			SwingIntake(60.deg),
 			TwistIntake((-45).deg),
+
 			WaitCommand(200),
 
-			TurnTurret(215.deg)
+			TurnTurret(ASIDE)
 		)
 	} else {
 		InstantCommand()

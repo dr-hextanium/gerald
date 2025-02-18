@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
 import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
 import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
+import org.firstinspires.ftc.teamcode.hardware.Positions.Lift
+import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 
 class PrepScoring : SequentialCommandGroup(
 	OpenIntake(),
@@ -17,11 +17,11 @@ class PrepScoring : SequentialCommandGroup(
 	CloseDeposit(),
 	WaitCommand(200),
 
-	LiftToUntil(Lift.SPEC_CLEARANCE_HEIGHT, time = 250),
+	LiftToUntil(Lift.CLEARANCE, time = 250),
 
 	ParallelCommandGroup(
-		SwingDeposit(Deposit.Companion.Deposit.ARM_SCORE_SPECIMEN),
-		PivotDeposit(Deposit.Companion.Deposit.PIVOT_SCORE_SPECIMEN)
+		SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
+		PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
 	),
 
 	WaitCommand(100)

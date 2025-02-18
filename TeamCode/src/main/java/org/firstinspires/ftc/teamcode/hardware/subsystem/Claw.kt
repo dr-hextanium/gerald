@@ -32,16 +32,4 @@ class Claw(val servo: UsefulServo, val opened: Double, val closed: Double) : ISu
 
 	fun isOpen() = position == opened
 	fun isClosed() = position == closed
-
-	companion object {
-		object Deposit {
-			val OPEN = 1.5
-			val CLOSE = 0.0
-		}
-
-		object Intake {
-			val OPEN = 5.0
-			val CLOSE = 6.0
-		}
-	}
 }

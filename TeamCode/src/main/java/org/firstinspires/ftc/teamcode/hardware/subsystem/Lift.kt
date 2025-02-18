@@ -76,9 +76,5 @@ class Lift(
 
         const val MAX_POWER = 0.8
         const val THRESHOLD = 0.01
-
-        const val GRAB_SPEC = 2.5 // inches
-        const val SPEC_CLEARANCE_HEIGHT = 7.0 // inches
-        const val SCORE_SPEC = 15.0
     }
 }

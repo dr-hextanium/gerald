@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.command.sequences
 
 import com.arcrobotics.ftclib.command.ConditionalCommand
+import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 import org.firstinspires.ftc.teamcode.hardware.Robot
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
 
 class SquareBind : ConditionalCommand(
 	ToIntake(),
@@ -13,5 +13,5 @@ class SquareBind : ConditionalCommand(
 class CrossBind : ConditionalCommand(
 	ScoreSpecimen(),
 	PrepScoring(),
-	{ Robot.Subsystems.deposit.arm.angle == Deposit.Companion.Deposit.ARM_SCORE_SPECIMEN }
+	{ Robot.Subsystems.deposit.arm.angle == Deposit.Arm.SCORE_SPECIMEN }
 )

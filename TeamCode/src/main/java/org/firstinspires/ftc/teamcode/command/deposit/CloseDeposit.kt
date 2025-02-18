@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.command.deposit
 
 import org.firstinspires.ftc.teamcode.command.CommandTemplate
+import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit.Claw.CLOSED
 import org.firstinspires.ftc.teamcode.hardware.Robot
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
 
 class CloseDeposit : CommandTemplate() {
-	override fun initialize() { Robot.Subsystems.deposit.claw.manual(Claw.Companion.Deposit.CLOSE) }
+	override fun initialize() { Robot.Subsystems.deposit.claw.manual(CLOSED) }
 
 	override fun execute() {}
 

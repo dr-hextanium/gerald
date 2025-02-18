@@ -23,6 +23,10 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
         xController = VCPIDFController(X.kP, X.kI, X.kD, X.kF, 13.0)
         yController = VCPIDFController(Y.kP, Y.kI, Y.kD, Y.kF, 13.0)
         hController = VCPIDFController(H.kP, H.kI, H.kD, H.kF, 13.0)
+
+        xController.updateCoefficients(X.kP, X.kI, X.kD, X.kF, X.alpha)
+        xController.updateCoefficients(Y.kP, Y.kI, Y.kD, Y.kF, Y.alpha)
+        xController.updateCoefficients(H.kP, H.kI, H.kD, H.kF, H.alpha)
     }
 
     override fun initialize() {}

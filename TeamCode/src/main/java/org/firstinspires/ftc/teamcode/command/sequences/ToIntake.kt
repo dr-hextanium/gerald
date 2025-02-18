@@ -9,19 +9,21 @@ import org.firstinspires.ftc.teamcode.command.intake.PitchIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntake
 import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
+import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
+import org.firstinspires.ftc.teamcode.hardware.Positions.Lift
+import org.firstinspires.ftc.teamcode.hardware.Positions.Intake
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class ToIntake : SequentialCommandGroup(
-	PivotDeposit(Deposit.Companion.Deposit.PIVOT_GRAB_SPECIMEN),
-	SwingDeposit(Deposit.Companion.Deposit.ARM_GRAB_SPECIMEN),
-	LiftToUntil(Lift.GRAB_SPEC, time = 300),
+	SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
+	PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
+	LiftToUntil(Lift.HIGH_CHAMBER, time = 300),
 
 	ExtensionToUntil(15.0, time = 300),
-	TurnTurret(79.deg),
-	SwingIntake(Intake.INTERMEDIATE_ARM_ANGLE),
-	PitchIntake(Intake.INTERMEDIATE_INTAKE_PITCH),
+	TurnTurret(Intake.Turret.CENTER),
+
+	SwingIntake(Intake.Arm.INTERMEDIATE_ANGLE),
+	PitchIntake(Intake.Claw.INTERMEDIATE_PITCH),
+
 	TwistIntake(0.0.deg)
 )

@@ -272,12 +272,12 @@ object Robot : ISubsystem {
 		val turret = Turret(Servos.turret, 79.deg)
 		val diffy = Diffy(Servos.Diffy.left, Servos.Diffy.right)
 		val frontArm = Arm(Servos.Intake.left, Servos.Intake.right)
-		val frontClaw = Claw(Servos.Diffy.claw, Claw.Companion.Intake.OPEN, Claw.Companion.Intake.CLOSE)
+		val frontClaw = Claw(Servos.Diffy.claw, Positions.Intake.Claw.OPEN, Positions.Intake.Claw.CLOSED)
 
 		Subsystems.intake = Intake(turret, frontArm, diffy, frontClaw)
 
 		val pivot = Servos.Deposit.pivot
-		val claw = Claw(Servos.Deposit.claw, Claw.Companion.Deposit.OPEN, Claw.Companion.Deposit.CLOSE)
+		val claw = Claw(Servos.Deposit.claw, Positions.Deposit.Claw.OPEN, Positions.Deposit.Claw.CLOSED)
 		val arm = Arm(Servos.Deposit.left, Servos.Deposit.right)
 
 		Subsystems.deposit = Deposit(pivot, arm, claw)
