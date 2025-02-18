@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.command.sequences
+package org.firstinspires.ftc.teamcode.command.sequences.specimen
 
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.arcrobotics.ftclib.command.WaitCommand
