@@ -9,6 +9,6 @@ import org.firstinspires.ftc.teamcode.hardware.Positions
 class ScoreSpecimen : SequentialCommandGroup(
 	LiftToUntil(Positions.Lift.HIGH_CHAMBER, time = 500),
 	OpenDeposit(),
-	WaitCommand(500),
+	WaitCommand(250),
 	PrepGrabbingSpecimen(intake = false)
 )

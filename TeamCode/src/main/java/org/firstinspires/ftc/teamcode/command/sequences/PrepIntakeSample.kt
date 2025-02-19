@@ -15,10 +15,6 @@ import org.firstinspires.ftc.teamcode.hardware.Positions.Intake
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class PrepIntakeSample : SequentialCommandGroup(
-	SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
-	PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
-	LiftToUntil(Lift.HIGH_CHAMBER, time = 300),
-
 	ExtensionToUntil(15.0, time = 300),
 	TurnTurret(Intake.Turret.CENTER),
 

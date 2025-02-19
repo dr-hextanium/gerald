@@ -10,11 +10,14 @@ object Positions {
 
             val INTERMEDIATE_PITCH = 305.deg
             val INTAKE_PITCH = 292.deg
+            val ASIDE_PITCH = 250.deg
+            val ASIDE_TWIST = (-45).deg
         }
 
         object Arm {
             val INTERMEDIATE_ANGLE = 60.deg
             val GRAB_ANGLE = 44.deg
+            val ASIDE = 75.deg
         }
 
         object Turret {
@@ -33,7 +36,7 @@ object Positions {
 
         object Pivot {
             val GRAB_SPECIMEN = 7.deg
-            val SCORE_SPECIMEN = 20.deg
+            val SCORE_SPECIMEN = 35.deg
             val SCORE_SAMPLE = 0.deg // TODO
         }
 
@@ -46,7 +49,7 @@ object Positions {
     object Lift {
         const val GRAB_SPECIMEN = 2.5 // inches
         const val CLEARANCE = 7.0 // inches
-        const val HIGH_CHAMBER = 15.0 // inches
+        const val HIGH_CHAMBER = 16.0 // inches
         const val HIGH_BASKET = 0.0 // inches, TODO
     }
 

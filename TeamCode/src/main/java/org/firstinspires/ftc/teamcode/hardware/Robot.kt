@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.qualcomm.hardware.lynx.LynxModule
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorEx
@@ -284,8 +285,6 @@ object Robot : ISubsystem {
 		Subsystems.hang = Hang(Servos.Hang.left1, Servos.Hang.left2, Servos.Hang.right1, Servos.Hang.right2)
 
 		scheduler.registerSubsystem(*Subsystems.all().toTypedArray())
-
-		write()
 
 		reset()
 	}

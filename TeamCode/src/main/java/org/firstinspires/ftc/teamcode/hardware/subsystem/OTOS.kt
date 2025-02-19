@@ -14,13 +14,8 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
     val isDoneCalibration: Boolean
         get() = calibrationProgress < 1
 
-    var pose = SparkFunOTOS.Pose2D()
-
-    fun getPose(): Pose2d {
-        return Pose2d(
-            pose.x, pose.y, Rotation2d.fromDegrees(pose.h)
-        )
-    }
+    val pose
+        get() = sensor.position
 
     fun getDegrees() = pose.h
 
@@ -33,20 +28,27 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
         sensor.angularUnit = AngleUnit.DEGREES
 
         // 2 * Math.PI - Math.PI / 2
-        sensor.offset = SparkFunOTOS.Pose2D(0.0, 0.0, 0.0)
+        sensor.offset = SparkFunOTOS.Pose2D(1.645, 0.0, -Math.PI / 2.0)
+        // 48.0 / listOf(43.3734, 42.3882, 41.8716).average()
         sensor.setLinearScalar(1.0)
-        sensor.setAngularScalar(1.0)
+        sensor.setAngularScalar(3600.0 / 3594.0)
 
         sensor.calibrateImu(255, true)
 
         sensor.resetTracking()
+
+        resetPose()
     }
 
-    override fun read() { pose = sensor.position }
+    override fun read() { }
 
     override fun update() { }
 
     override fun write() { }
+
+    fun resetHeading() {
+        sensor.position = SparkFunOTOS.Pose2D(pose.x, pose.y, 0.0)
+    }
 
     fun resetPose() {
         sensor.position = SparkFunOTOS.Pose2D(0.0, 0.0, 0.0)

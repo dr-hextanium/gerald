@@ -2,8 +2,17 @@ package org.firstinspires.ftc.teamcode.opmode.template
 
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.arcrobotics.ftclib.command.ParallelCommandGroup
+import com.arcrobotics.ftclib.command.SequentialCommandGroup
+import com.arcrobotics.ftclib.command.WaitCommand
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
+import org.firstinspires.ftc.teamcode.command.deposit.OpenDeposit
+import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
+import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
+import org.firstinspires.ftc.teamcode.command.intake.PitchIntake
+import org.firstinspires.ftc.teamcode.command.intake.SwingIntake
+import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
 import org.firstinspires.ftc.teamcode.utility.functions.deg
@@ -24,18 +33,44 @@ abstract class BaseTemplate : OpMode() {
 		telemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
 		Robot.init(hardwareMap, telemetry, gamepad1, gamepad2)
 
-		Subsystems.intake.claw.manual(4.5.deg)
-		Subsystems.intake.twist((-45).deg)
-		Subsystems.intake.pitch(260.deg)
-		Subsystems.intake.dropTo(60.deg)
-		Subsystems.intake.turnTo(215.deg)
-		Subsystems.deposit.raiseTo(0.deg)
-		Subsystems.deposit.pitchTo(120.deg)
-		Subsystems.deposit.claw.manual(1.5.deg)
-
 		initialize()
 
-		Robot.write()
+		Subsystems.odometry.reset()
+
+		telemetry.addLine("initializing")
+	}
+
+	override fun start() {
+		Robot.scheduler.schedule(
+			OpenIntake(),
+			OpenDeposit(),
+
+			ParallelCommandGroup(
+				SequentialCommandGroup(
+					SwingDeposit(355.deg),
+					WaitCommand(350),
+				),
+
+				SequentialCommandGroup(
+					SwingIntake(70.deg),
+					WaitCommand(250),
+					PitchIntake(180.deg),
+					WaitCommand(250),
+					TurnTurret(80.deg),
+					WaitCommand(500),
+				),
+			),
+
+			WaitCommand(350),
+
+			SequentialCommandGroup(
+				TurnTurret(215.deg),
+				WaitCommand(250),
+				PitchIntake(260.deg),
+				WaitCommand(250),
+				SwingIntake(70.deg),
+			)
+		)
 	}
 
 	override fun loop() {

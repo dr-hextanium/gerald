@@ -13,16 +13,14 @@ import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 
 class PrepScoringSpecimen : SequentialCommandGroup(
 	OpenIntake(),
-	WaitCommand(100),
 	CloseDeposit(),
-	WaitCommand(200),
-
-	LiftToUntil(Lift.CLEARANCE, time = 250),
 
 	ParallelCommandGroup(
-		SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
-		PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
-	),
+		LiftToUntil(Lift.CLEARANCE, time = 500),
 
-	WaitCommand(100)
+		ParallelCommandGroup(
+			SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
+			PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
+		),
+	),
 )

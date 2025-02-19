@@ -9,9 +9,6 @@ class Arm(val left: UsefulServo, val right: UsefulServo) : ISubsystem {
 	override fun reset() {
 		left.bound()
 		right.bound()
-
-		left.position = 0.deg
-		right.position = 0.deg
 	}
 
 	override fun read() {}

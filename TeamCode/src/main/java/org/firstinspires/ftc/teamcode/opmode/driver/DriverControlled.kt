@@ -1,15 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmode.driver
 
+import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import org.firstinspires.ftc.teamcode.command.deposit.OpenDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.ToggleDeposit
 import org.firstinspires.ftc.teamcode.command.hang.ExtendHang
 import org.firstinspires.ftc.teamcode.command.hang.RetractHang
 import org.firstinspires.ftc.teamcode.command.hang.StopHang
+import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
 import org.firstinspires.ftc.teamcode.command.intake.ToggleIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntakeRelatively
+import org.firstinspires.ftc.teamcode.command.lift.NudgeLift
 import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
 import org.firstinspires.ftc.teamcode.command.sequences.PrimarySquareBind
@@ -34,6 +38,9 @@ class DriverControlled : BaseTemplate() {
 		GamepadButton(primary, CROSS)
 			.whenPressed(PrimaryCrossBind())
 
+		GamepadButton(primary, GamepadKeys.Button.LEFT_STICK_BUTTON)
+			.whenPressed(InstantCommand({ Subsystems.odometry.resetPose() }))
+
 		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
 			.whenPressed(ToggleIntake())
 
@@ -53,21 +60,19 @@ class DriverControlled : BaseTemplate() {
 
 		GamepadButton(primary, GamepadKeys.Button.RIGHT_BUMPER)
 			.whenPressed(TwistIntakeRelatively(30.0.deg))
-	}
 
-	override fun init_loop() {
-		Subsystems.intake.claw.manual(4.5)
-		Subsystems.intake.twist((-45).deg)
-		Subsystems.intake.pitch(260.deg)
-		Subsystems.intake.dropTo(60.deg)
-		Subsystems.intake.turnTo(215.deg)
-		Subsystems.deposit.raiseTo(0.deg)
-		Subsystems.deposit.pitchTo(120.deg)
-		Subsystems.deposit.claw.manual(1.5)
+		GamepadButton(primary, GamepadKeys.Button.BACK)
+			.whenPressed(NudgeLift(-5.0))
+
+		GamepadButton(primary, GamepadKeys.Button.START)
+			.whenPressed(NudgeLift(5.0))
 	}
 
 	override fun cycle() {
-		val heading = Subsystems.odometry.getDegrees()
+		val pose = Subsystems.odometry.pose
+		val heading = pose.h
+		val x = pose.x
+		val y = pose.y
 
 		Subsystems.drive.driveFieldCentric(
 			-curve(Robot.gamepad1.leftX),
@@ -75,5 +80,9 @@ class DriverControlled : BaseTemplate() {
 			-curve(Robot.gamepad1.rightX),
 			heading
 		)
+
+		telemetry.addData("heading", heading)
+		telemetry.addData("x", x)
+		telemetry.addData("y", y)
 	}
 }

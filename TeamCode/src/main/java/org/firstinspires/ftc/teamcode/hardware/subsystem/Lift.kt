@@ -55,13 +55,15 @@ class Lift(
         left.power = power
     }
 
+    fun nudge(amount: Double) { target += amount }
+
     fun busy() = !controller.atSetPoint()
 
     fun within(tolerance: Double) = abs(target - position) <= tolerance
 
     companion object {
         @JvmField
-        var kP = 0.08
+        var kP = 0.06
         @JvmField
         var kI = 0.03
         @JvmField
