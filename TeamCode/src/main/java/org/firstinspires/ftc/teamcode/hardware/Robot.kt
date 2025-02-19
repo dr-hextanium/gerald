@@ -19,6 +19,7 @@ import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.teamcode.hardware.drive.CachingMecanumDrive
+import org.firstinspires.ftc.teamcode.hardware.subsystem.AltLift
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
@@ -65,12 +66,13 @@ object Robot : ISubsystem {
 		lateinit var odometry: OTOS
 
 		lateinit var lift: Lift
+		lateinit var altLift: AltLift
 		lateinit var extension: Extension
 		lateinit var intake: Intake
 		lateinit var deposit: Deposit
 		lateinit var hang: Hang
 
-		fun all() = listOf(lift, intake, hang, deposit, extension, odometry)
+		fun all() = listOf(altLift, intake, hang, deposit, extension, odometry)
 	}
 
 	object Motors {
@@ -267,7 +269,7 @@ object Robot : ISubsystem {
 
 		Subsystems.odometry = OTOS(hw[Names.I2C.otos] as SparkFunOTOSCorrected)
 
-		Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
+		Subsystems.altLift = AltLift(Motors.Lift.left, Motors.Lift.right)
 		Subsystems.extension = Extension(Motors.extension)
 
 		val turret = Turret(Servos.turret, 79.deg)
