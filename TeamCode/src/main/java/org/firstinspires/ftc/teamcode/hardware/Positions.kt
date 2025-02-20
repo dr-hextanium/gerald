@@ -47,8 +47,8 @@ object Positions {
     }
 
     object Lift {
-        const val GRAB_SPECIMEN = 2.5 // inches
-        const val CLEARANCE = 7.0 // inches
+        const val GRAB_SPECIMEN = 2.0 // inches
+        const val CLEARANCE = 5.0 // inches
         const val HIGH_CHAMBER = 16.0 // inches
         const val HIGH_BASKET = 0.0 // inches, TODO
     }

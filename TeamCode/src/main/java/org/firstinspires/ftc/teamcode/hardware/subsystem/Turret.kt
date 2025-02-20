@@ -6,9 +6,7 @@ import org.firstinspires.ftc.teamcode.utility.functions.deg
 class Turret(val servo: UsefulServo, val default: Double = 0.deg) : ISubsystem {
     var angle = default
 
-    override fun reset() {
-        servo.position = default
-    }
+    override fun reset() {}
 
     override fun read() {}
 

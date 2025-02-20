@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.command.auto
 
 import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.teamcode.command.CommandTemplate
+import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.utility.controller.PIDFController
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
 import org.firstinspires.ftc.teamcode.utility.functions.angularDifference
+import kotlin.math.abs
 import kotlin.math.absoluteValue
 import kotlin.math.hypot
 
@@ -14,44 +17,86 @@ import kotlin.math.hypot
 class GoToPoint(val target: Pose2D) : CommandTemplate() {
     constructor(x: Double, y: Double, theta: Double) : this(Pose2D(x, y, theta))
 
-    val xController: PIDFController
-    val yController: PIDFController
-    val hController: PIDFController
+    lateinit var xController: PIDFController
+    lateinit var yController: PIDFController
+    lateinit var hController: PIDFController
 
-    // i have no clue if this works with dashboard but we'll see
-    init {
+    override fun initialize() {
         xController = VCPIDFController(X.kP, X.kI, X.kD, X.kF, 13.0)
         yController = VCPIDFController(Y.kP, Y.kI, Y.kD, Y.kF, 13.0)
         hController = VCPIDFController(H.kP, H.kI, H.kD, H.kF, 13.0)
 
-        xController.updateCoefficients(X.kP, X.kI, X.kD, X.kF, X.alpha)
-        xController.updateCoefficients(Y.kP, Y.kI, Y.kD, Y.kF, Y.alpha)
-        xController.updateCoefficients(H.kP, H.kI, H.kD, H.kF, H.alpha)
+        Globals.target = target
     }
-
-    override fun initialize() {}
 
     override fun execute() {
         val pose = Robot.Subsystems.odometry.pose
 
-        Robot.Subsystems.drive.driveFieldCentric(
-            xController.calculate(pose.x, target.x),
-            xController.calculate(pose.y, target.y),
-            xController.calculate(pose.h, target.h),
-            pose.h
-        )
+        xController.updateCoefficients(X.kP, X.kI, X.kD, X.kF, X.alpha)
+        yController.updateCoefficients(Y.kP, Y.kI, Y.kD, Y.kF, Y.alpha)
+        hController.updateCoefficients(H.kP, H.kI, H.kD, H.kF, H.alpha)
+
+        val x = xController.calculate(pose.x, target.x)
+        val y = yController.calculate(pose.y, target.y)
+        val h = hController.calculate(AngleUnit.normalizeDegrees(pose.h - target.h))
+
+        Robot.telemetry.addData("x", x)
+        Robot.telemetry.addData("y", y)
+        Robot.telemetry.addData("h", h)
+
+        Robot.Subsystems.drive.driveFieldCentric(-x, -y, -h, pose.h)
     }
 
     override fun isFinished(): Boolean {
+        if (Globals.target != target) return true
+
         val pose = Robot.Subsystems.odometry.pose
 
         val dx = target.x - pose.x
         val dy = target.y - pose.y
 
         val ds = hypot(dx, dy)
-        val da = angularDifference(pose.h, target.h).absoluteValue
+        val da = AngleUnit.normalizeDegrees(pose.h - target.h)
 
-        return (ds <= DISPLACEMENT_TOLERANCE) && (da <= ANGULAR_TOLERANCE)
+        Globals.da = da
+        Globals.dx = dx
+        Globals.dy = dy
+
+        return (ds <= DISPLACEMENT_TOLERANCE) && (abs(da) <= ANGULAR_TOLERANCE)
+    }
+
+    override fun end(interrupted: Boolean) {
+        Globals.da = 0.0
+        Globals.dx = 0.0
+        Globals.dy = 0.0
+        Robot.Subsystems.drive.driveFieldCentric(0.0, 0.0, 0.0, 0.0)
+    }
+
+    @Config
+    object X {
+        @JvmField var kP = 0.008
+        @JvmField var kI = 0.00
+        @JvmField var kD = 0.000
+        @JvmField var kF = 0.00
+        @JvmField var alpha = 0.8
+    }
+
+    @Config
+    object Y {
+        @JvmField var kP = 0.006
+        @JvmField var kI = 0.00
+        @JvmField var kD = 0.000
+        @JvmField var kF = 0.00
+        @JvmField var alpha = 0.8
+    }
+
+    @Config
+    object H {
+        @JvmField var kP = 0.0055
+        @JvmField var kI = 0.00
+        @JvmField var kD = 0.000
+        @JvmField var kF = 0.00
+        @JvmField var alpha = 0.8
     }
 
     companion object {
@@ -59,30 +104,6 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
         var DISPLACEMENT_TOLERANCE = 1.0
 
         @JvmField
-        var ANGULAR_TOLERANCE = 0.05
-
-        object X {
-            @JvmField var kP = 0.00
-            @JvmField var kI = 0.00
-            @JvmField var kD = 0.000
-            @JvmField var kF = 0.00
-            @JvmField var alpha = 0.8
-        }
-
-        object Y {
-            @JvmField var kP = 0.00
-            @JvmField var kI = 0.00
-            @JvmField var kD = 0.000
-            @JvmField var kF = 0.00
-            @JvmField var alpha = 0.8
-        }
-
-        object H {
-            @JvmField var kP = 0.00
-            @JvmField var kI = 0.00
-            @JvmField var kD = 0.000
-            @JvmField var kF = 0.00
-            @JvmField var alpha = 0.8
-        }
+        var ANGULAR_TOLERANCE = 1.0
     }
 }

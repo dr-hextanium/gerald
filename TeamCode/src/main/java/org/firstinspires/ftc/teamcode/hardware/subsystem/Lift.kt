@@ -63,9 +63,9 @@ class Lift(
 
     companion object {
         @JvmField
-        var kP = 0.06
+        var kP = 0.08
         @JvmField
-        var kI = 0.03
+        var kI = 0.00
         @JvmField
         var kD = 0.000
         @JvmField

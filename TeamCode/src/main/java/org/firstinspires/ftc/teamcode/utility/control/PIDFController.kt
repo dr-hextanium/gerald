@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.utility.controller
 
+import com.qualcomm.hardware.bosch.BNO055IMU
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlin.Double.Companion.NaN
 import kotlin.math.abs
@@ -47,11 +48,11 @@ open class PIDFController(
 
     fun atSetPoint() = abs(currentError) <= threshold
 
-    open fun calculate(currentPosition: Double, targetPosition: Double): Double {
+    fun calculate(error: Double): Double {
+        currentError = error
+
         val currentTimeStamp = elapsedTime.milliseconds()
         val timeStep = if (lastTimeStamp > 0.0) (currentTimeStamp - lastTimeStamp) / 1000.0 else 0.0
-
-        currentError = targetPosition - currentPosition
 
         if (atSetPoint()) {
             integralSum = 0.0
@@ -85,5 +86,10 @@ open class PIDFController(
         lastD = rawD
 
         return output
+    }
+
+    open fun calculate(currentPosition: Double, targetPosition: Double): Double {
+        currentError = targetPosition - currentPosition
+        return calculate(currentError)
     }
 }

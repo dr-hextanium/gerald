@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
 import org.firstinspires.ftc.teamcode.command.intake.PitchIntake
 import org.firstinspires.ftc.teamcode.command.intake.SwingIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
+import org.firstinspires.ftc.teamcode.command.sequences.specimen.PrepGrabbingSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
 import org.firstinspires.ftc.teamcode.utility.functions.deg
@@ -42,34 +43,36 @@ abstract class BaseTemplate : OpMode() {
 
 	override fun start() {
 		Robot.scheduler.schedule(
+			PrepGrabbingSpecimen(true),
+
 			OpenIntake(),
 			OpenDeposit(),
 
-			ParallelCommandGroup(
-				SequentialCommandGroup(
-					SwingDeposit(355.deg),
-					WaitCommand(350),
-				),
-
-				SequentialCommandGroup(
-					SwingIntake(70.deg),
-					WaitCommand(250),
-					PitchIntake(180.deg),
-					WaitCommand(250),
-					TurnTurret(80.deg),
-					WaitCommand(500),
-				),
-			),
-
-			WaitCommand(350),
-
-			SequentialCommandGroup(
-				TurnTurret(215.deg),
-				WaitCommand(250),
-				PitchIntake(260.deg),
-				WaitCommand(250),
-				SwingIntake(70.deg),
-			)
+//			ParallelCommandGroup(
+//				SequentialCommandGroup(
+//					SwingDeposit(355.deg),
+//					WaitCommand(350),
+//				),
+//
+//				SequentialCommandGroup(
+//					SwingIntake(110.deg),
+//					WaitCommand(250),
+//					PitchIntake(180.deg),
+//					WaitCommand(250),
+//					TurnTurret(80.deg),
+//					WaitCommand(500),
+//				),
+//			),
+//
+//			WaitCommand(350),
+//
+//			SequentialCommandGroup(
+//				TurnTurret(215.deg),
+//				WaitCommand(250),
+//				PitchIntake(260.deg),
+//				WaitCommand(250),
+//				SwingIntake(70.deg),
+//			)
 		)
 	}
 

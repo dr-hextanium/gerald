@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.command.sequences.specimen
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import com.arcrobotics.ftclib.command.WaitCommand
 import org.firstinspires.ftc.teamcode.command.deposit.CloseDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
