@@ -16,7 +16,7 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
     val pose: Pose2D
         get() {
             val raw = sensor.position
-            return Pose2D(-raw.y, raw.x, raw.h)
+            return Pose2D(raw.y, raw.x, raw.h)
         }
 
     fun getDegrees() = pose.h

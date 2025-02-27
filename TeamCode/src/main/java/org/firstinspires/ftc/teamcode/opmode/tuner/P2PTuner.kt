@@ -16,16 +16,10 @@ import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 class P2PTuner : BaseTemplate() {
     override fun initialize() {
         GamepadButton(primary, DPAD_LEFT)
-            .whenPressed(GoToPoint(-0.0, 30.0, 0.0))
-
-        GamepadButton(primary, DPAD_RIGHT)
-            .whenPressed(GoToPoint(0.0, 0.0, 0.0))
+            .whenPressed(GoToPoint(24.0, 0.0, 0.0))
 
         GamepadButton(primary, DPAD_UP)
             .whenPressed(GoToPoint(0.0, 24.0, 0.0))
-
-        GamepadButton(primary, DPAD_DOWN)
-            .whenPressed(GoToPoint(0.0, -24.0, 0.0))
 
         GamepadButton(primary, LEFT_BUMPER)
             .whenPressed(GoToPoint(0.0, 0.0, 0.0))
@@ -42,7 +36,12 @@ class P2PTuner : BaseTemplate() {
         telemetry.addData("dy", Globals.dy)
         telemetry.addData("da", Globals.da)
 
-        telemetry.addData("target", Globals.target)
-        telemetry.addData("pose", Robot.pose)
+        telemetry.addData("target x", Globals.target.x)
+        telemetry.addData("target y", Globals.target.y)
+        telemetry.addData("target h", Globals.target.h)
+
+        telemetry.addData("pose x", Robot.pose.x)
+        telemetry.addData("pose y", Robot.pose.y)
+        telemetry.addData("pose h", Robot.pose.h)
     }
 }

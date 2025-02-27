@@ -44,7 +44,7 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
         Robot.telemetry.addData("y", y)
         Robot.telemetry.addData("h", h)
 
-        Robot.Subsystems.drive.driveFieldCentric(-x, -y, -h, pose.h)
+        Robot.Subsystems.drive.driveFieldCentric(-x, y, -h, pose.h)
     }
 
     override fun isFinished(): Boolean {
@@ -74,8 +74,8 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
 
     @Config
     object X {
-        @JvmField var kP = 0.008
-        @JvmField var kI = 0.00
+        @JvmField var kP = 0.03
+        @JvmField var kI = 0.003
         @JvmField var kD = 0.000
         @JvmField var kF = 0.00
         @JvmField var alpha = 0.8
@@ -83,7 +83,7 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
 
     @Config
     object Y {
-        @JvmField var kP = 0.006
+        @JvmField var kP = 0.015
         @JvmField var kI = 0.00
         @JvmField var kD = 0.000
         @JvmField var kF = 0.00
@@ -92,10 +92,10 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
 
     @Config
     object H {
-        @JvmField var kP = 0.0055
-        @JvmField var kI = 0.00
-        @JvmField var kD = 0.000
-        @JvmField var kF = 0.00
+        @JvmField var kP = 0.01
+        @JvmField var kI = 0.03
+        @JvmField var kD = 0.001
+        @JvmField var kF = 0.1
         @JvmField var alpha = 0.8
     }
 
