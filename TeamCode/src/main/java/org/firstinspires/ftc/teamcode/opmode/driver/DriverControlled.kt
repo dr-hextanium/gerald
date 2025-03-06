@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmode.driver
 
+import com.arcrobotics.ftclib.command.ConditionalCommand
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
@@ -17,26 +18,41 @@ import org.firstinspires.ftc.teamcode.command.lift.NudgeLift
 import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
 import org.firstinspires.ftc.teamcode.command.sequences.PrimarySquareBind
+import org.firstinspires.ftc.teamcode.command.sequences.SecondaryCrossBind
+import org.firstinspires.ftc.teamcode.command.sequences.sample.Transfer
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 import org.firstinspires.ftc.teamcode.utility.functions.curve
 import org.firstinspires.ftc.teamcode.utility.functions.deg
+import java.util.concurrent.locks.Condition
 
 @TeleOp
 class DriverControlled : BaseTemplate() {
+	private var mode = Mode.SPECIMEN
+
 	override fun initialize() {
 		Globals.AUTO = false
 
 		GamepadButton(primary, SQUARE)
-			.whenPressed(PrimarySquareBind())
+			.whenPressed(
+				ConditionalCommand(
+					PrimarySquareBind(),
+					Transfer()
+				) { mode == Mode.SPECIMEN }
+			)
 
 		GamepadButton(primary, TRIANGLE)
 			.whenPressed(IntakeSample())
 
 		GamepadButton(primary, CROSS)
-			.whenPressed(PrimaryCrossBind())
+			.whenPressed(
+				ConditionalCommand(
+					PrimaryCrossBind(),
+					SecondaryCrossBind()
+				) { mode == Mode.SPECIMEN }
+			)
 
 		GamepadButton(primary, GamepadKeys.Button.LEFT_STICK_BUTTON)
 			.whenPressed(InstantCommand({ Subsystems.odometry.resetPose() }))
@@ -47,25 +63,33 @@ class DriverControlled : BaseTemplate() {
 		GamepadButton(primary, GamepadKeys.Button.DPAD_DOWN)
 			.whenPressed(ToggleDeposit())
 
-		GamepadButton(primary, GamepadKeys.Button.DPAD_LEFT)
+		GamepadButton(secondary, GamepadKeys.Button.DPAD_LEFT)
 			.whileHeld(RetractHang())
 			.whenReleased(StopHang())
 
-		GamepadButton(primary, GamepadKeys.Button.DPAD_RIGHT)
+		GamepadButton(secondary, GamepadKeys.Button.DPAD_RIGHT)
 			.whileHeld(ExtendHang())
 			.whenReleased(StopHang())
 
 		GamepadButton(primary, GamepadKeys.Button.LEFT_BUMPER)
-			.whenPressed(TwistIntakeRelatively((-30.0).deg))
+			.whenPressed(TwistIntakeRelatively((-20.0).deg))
 
 		GamepadButton(primary, GamepadKeys.Button.RIGHT_BUMPER)
-			.whenPressed(TwistIntakeRelatively(30.0.deg))
+			.whenPressed(TwistIntakeRelatively(20.0.deg))
 
 		GamepadButton(primary, GamepadKeys.Button.BACK)
 			.whenPressed(NudgeLift(-5.0))
 
 		GamepadButton(primary, GamepadKeys.Button.START)
 			.whenPressed(NudgeLift(5.0))
+
+//		GamepadButton(primary, CIRCLE)
+//			.whenPressed(
+//				ConditionalCommand(
+//					InstantCommand({ mode = Mode.SAMPLE }),
+//					InstantCommand({ mode = Mode.SPECIMEN })
+//				) { mode == Mode.SPECIMEN }
+//			)
 	}
 
 	override fun cycle() {
@@ -77,12 +101,18 @@ class DriverControlled : BaseTemplate() {
 		Subsystems.drive.driveFieldCentric(
 			-curve(Robot.gamepad1.leftX),
 			-curve(Robot.gamepad1.leftY),
-			-curve(Robot.gamepad1.rightX),
+			-curve(Robot.gamepad1.rightX) * 0.5,
 			heading
 		)
 
 		telemetry.addData("heading", heading)
 		telemetry.addData("x", x)
 		telemetry.addData("y", y)
+		telemetry.addData("mode", mode)
+	}
+
+	enum class Mode {
+		SAMPLE,
+		SPECIMEN
 	}
 }

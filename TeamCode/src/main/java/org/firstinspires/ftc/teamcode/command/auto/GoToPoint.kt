@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.command.auto
 
 import com.acmerobotics.dashboard.config.Config
+import com.arcrobotics.ftclib.command.ParallelRaceGroup
+import com.arcrobotics.ftclib.command.WaitCommand
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.teamcode.command.CommandTemplate
@@ -107,3 +109,8 @@ class GoToPoint(val target: Pose2D) : CommandTemplate() {
         var ANGULAR_TOLERANCE = 1.0
     }
 }
+
+class GoToPointTimed(target: Pose2D, time: Long) : ParallelRaceGroup(
+    GoToPoint(target),
+    WaitCommand(time)
+)

@@ -7,7 +7,7 @@ class RetractHang: CommandTemplate() {
 	val hang = Robot.Subsystems.hang
 
 	override fun initialize() {
-		hang.power = -1.0
+		hang.power = 1.0
 	}
 
 	override fun execute() {  }
