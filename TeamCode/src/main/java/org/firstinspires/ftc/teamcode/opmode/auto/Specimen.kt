@@ -75,31 +75,31 @@ class Specimen : BaseTemplate() {
 				GoToPointTimed(Pose2D(0.0, -15.0, 0.0), 2000),
 
 				// go right
-				GoToPointTimed(Pose2D(24.0, -15.0, 0.0), 2000),
+				GoToPointTimed(Pose2D(21.0, -15.0, 0.0), 2000),
 				// go up
-				GoToPointTimed(Pose2D(24.0, -40.0, 0.0), 2000),
+				GoToPointTimed(Pose2D(21.0, -35.0, 0.0), 2000),
 
 				// push in
-				GoToPointTimed(Pose2D(33.5, -40.0, 0.0), 2000),
-				GoToPointTimed(Pose2D(33.5, -10.0, 0.0), 2000),
-
-				// go back
-				GoToPointTimed(Pose2D(33.5, -40.0, 0.0), 2000),
-
+				GoToPointTimed(Pose2D(28.0, -35.0, 0.0), 2000),
+				GoToPointTimed(Pose2D(28.0, -5.0, 0.0), 2000),
+//
+//				// go back
+				GoToPointTimed(Pose2D(28.0, -35.0, 0.0), 2000),
+//
 				// slide over
-				GoToPointTimed(Pose2D(38.5, -40.0, 20.0), 2000),
+				GoToPointTimed(Pose2D(33.5, -35.0, 0.0), 2000),
 				// slide in
-				GoToPointTimed(Pose2D(38.5, -10.0, 0.0), 2000),
+				GoToPointTimed(Pose2D(33.5, -2.0, 0.0), 2000),
 
 				WaitCommand(250),
-
+//
 				// grab
-				GoToPointTimed(Pose2D(41.5, 2.5, 0.0), 2000),
+				GoToPointTimed(Pose2D(28.0, 4.0, 0.0), 2000),
 				PrepScoringSpecimen(),
 				WaitCommand(500),
-
+//
 				GoToPointTimed(Pose2D(7.0, -5.0, 0.0), 2000),
-				GoToPointTimed(Pose2D(0.0, -31.0, 0.0), 2000),
+				GoToPointTimed(Pose2D(0.0, -33.0, 0.0), 1000),
 				WaitCommand(500),
 				ScoreSpecimen(),
 			)
