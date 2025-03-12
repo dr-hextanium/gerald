@@ -16,7 +16,7 @@ class PrepScoringSpecimen(val lift: Boolean = true) : SequentialCommandGroup(
 	OpenIntake(),
 	CloseDeposit(),
 
-	WaitCommand(200),
+	WaitCommand(50),
 
 	ParallelCommandGroup(
 		if (lift) {
@@ -28,4 +28,6 @@ class PrepScoringSpecimen(val lift: Boolean = true) : SequentialCommandGroup(
 			PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
 		),
 	),
+
+	WaitCommand(100),
 )

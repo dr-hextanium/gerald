@@ -14,7 +14,8 @@ object Positions {
             val INTAKE_PITCH = 300.deg
             val ASIDE_PITCH = 250.deg
             val ASIDE_TWIST = (-45).deg
-            val TRANSFER_SAMPLE_PITCH = 230.0
+            val TRANSFER_SAMPLE_PITCH = 230.0.deg
+            val TUCK_PITCH = 355.0.deg
         }
 
         object Arm {
@@ -23,11 +24,13 @@ object Positions {
             val GRAB_ANGLE = 40.deg
             val ASIDE = 75.deg
             val TRANSFER_SAMPLE = 300.deg
+            val TUCK = 115.deg
         }
 
         object Turret {
             val ASIDE = 215.deg
-            val CENTER = 80.deg
+            val CENTER = 115.deg
+            val TUCK = 200.deg
         }
     }
 

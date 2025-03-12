@@ -5,6 +5,7 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.hardware.wrapper.SparkFunOTOSCorrected
+import kotlin.math.PI
 
 class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
     val calibrationProgress: Int
@@ -16,7 +17,7 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
     val pose: Pose2D
         get() {
             val raw = sensor.position
-            return Pose2D(raw.y, raw.x, raw.h)
+            return Pose2D(raw.x, raw.y, raw.h)
         }
 
     fun getDegrees() = pose.h
@@ -30,9 +31,9 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
         sensor.angularUnit = AngleUnit.DEGREES
 
         // 2 * Math.PI - Math.PI / 2
-        sensor.offset = Pose2D(1.645, 0.0, -Math.PI / 2.0)
+        sensor.offset = Pose2D(-1.645, 0.0, 0.0)
         // 48.0 / listOf(43.3734, 42.3882, 41.8716).average()
-        sensor.setLinearScalar(1.0)
+        sensor.setLinearScalar(1.00)
         sensor.setAngularScalar(3600.0 / 3594.0)
 
         sensor.calibrateImu(255, true)
@@ -42,7 +43,9 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
         resetPose()
     }
 
-    override fun read() { }
+    override fun read() {
+
+    }
 
     override fun update() { }
 
