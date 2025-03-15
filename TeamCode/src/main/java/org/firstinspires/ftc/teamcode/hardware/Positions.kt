@@ -40,6 +40,7 @@ object Positions {
             val GRAB_SPECIMEN = 355.deg
             val SCORE_SPECIMEN = 120.deg
             val SCORE_SAMPLE = 150.deg
+            val REACHING_GRAB = 315.deg
         }
 
         object Pivot {
@@ -47,6 +48,7 @@ object Positions {
             val SCORE_SPECIMEN = 35.deg
             val SCORE_SAMPLE = 150.deg
             val TRANSFER_SAMPLE = 70.deg
+            val REACHING_GRAB = 45.deg
         }
 
         object Claw {
