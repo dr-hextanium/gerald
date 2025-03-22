@@ -8,13 +8,18 @@ import com.arcrobotics.ftclib.command.WaitCommand
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import org.firstinspires.ftc.teamcode.command.deposit.OpenDeposit
+import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
 import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
 import org.firstinspires.ftc.teamcode.command.intake.PitchIntake
 import org.firstinspires.ftc.teamcode.command.intake.SwingIntake
+import org.firstinspires.ftc.teamcode.command.intake.TuckIntake
 import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
+import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
 import org.firstinspires.ftc.teamcode.command.sequences.specimen.PrepGrabbingSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Globals
+import org.firstinspires.ftc.teamcode.hardware.Positions
+import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
 import org.firstinspires.ftc.teamcode.utility.functions.deg
@@ -45,7 +50,10 @@ abstract class BaseTemplate : OpMode() {
 	override fun start() {
 		if (!Globals.AUTO) {
 			Robot.scheduler.schedule(
-				PrepGrabbingSpecimen(true),
+				PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
+				SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
+				LiftToUntil(Positions.Lift.GRAB_SPECIMEN, time = 250),
+				TuckIntake(),
 				OpenIntake(),
 				OpenDeposit(),
 			)

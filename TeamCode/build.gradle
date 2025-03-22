@@ -23,7 +23,7 @@ buildscript {
         maven { url "https://repo.dairy.foundation/releases" }
     }
     dependencies {
-        classpath "dev.frozenmilk:Load:0.1.0"
+        classpath "dev.frozenmilk:Load:0.2.0"
     }
 }
 
@@ -39,13 +39,15 @@ android {
 repositories {
     maven { url = 'https://maven.brott.dev/' }
     maven { url "https://repo.dairy.foundation/releases" }
+    maven { url = "https://repo.dairy.foundation/snapshots" }
 }
 
 dependencies {
     implementation project(':FtcRobotController')
 
-    implementation "dev.frozenmilk.sinister:Sloth:0.1.0"
-
+    implementation("dev.frozenmilk.dairy:Core:2.2.0")
+    implementation("dev.frozenmilk.sinister:Sloth:0.2.0")
+    implementation("com.acmerobotics.slothboard:dashboard:0.2.0+0.4.16")
 
     implementation 'org.ftclib.ftclib:core:2.1.1'
 }

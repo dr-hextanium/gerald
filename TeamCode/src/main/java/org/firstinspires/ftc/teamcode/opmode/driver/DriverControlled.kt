@@ -55,7 +55,7 @@ class DriverControlled : BaseTemplate() {
 			)
 
 		GamepadButton(primary, GamepadKeys.Button.LEFT_STICK_BUTTON)
-			.whenPressed(InstantCommand({ Subsystems.odometry.resetPose() }))
+			.whenPressed(InstantCommand({ Robot.follower.resetOffset() }))
 
 		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
 			.whenPressed(ToggleIntake())
@@ -93,8 +93,8 @@ class DriverControlled : BaseTemplate() {
 	}
 
 	override fun cycle() {
-		val pose = Subsystems.odometry.pose
-		val heading = pose.h
+		val pose = Robot.follower.pose
+		val heading = pose.heading
 		val x = pose.x
 		val y = pose.y
 

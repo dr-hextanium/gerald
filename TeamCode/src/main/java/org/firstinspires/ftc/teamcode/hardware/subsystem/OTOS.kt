@@ -17,7 +17,11 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
     val pose: Pose2D
         get() {
             val raw = sensor.position
-            return Pose2D(raw.x, raw.y, raw.h)
+
+            val xMultiplier = (48.0 / 40.38) * (48.0 / 52.0)
+            val yMultiplier = 1.0
+
+            return Pose2D(raw.x * xMultiplier, raw.y * yMultiplier, raw.h)
         }
 
     fun getDegrees() = pose.h
@@ -33,7 +37,8 @@ class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
         // 2 * Math.PI - Math.PI / 2
         sensor.offset = Pose2D(-1.645, 0.0, 0.0)
         // 48.0 / listOf(43.3734, 42.3882, 41.8716).average()
-        sensor.setLinearScalar(1.00)
+//        sensor.setLinearScalar(1.00)
+        sensor.setLinearScalar(1.127)
         sensor.setAngularScalar(3600.0 / 3594.0)
 
         sensor.calibrateImu(255, true)

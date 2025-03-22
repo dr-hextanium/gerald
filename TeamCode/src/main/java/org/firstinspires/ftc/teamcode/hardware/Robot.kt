@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
+import com.pedropathing.follower.Follower
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
@@ -57,12 +58,13 @@ object Robot : ISubsystem {
 	var voltageTimer = ElapsedTime()
 	var voltage: Double = 0.0
 
-	val pose: Pose2D
-		get() = Subsystems.odometry.pose
+	lateinit var follower: Follower
+
+	val pose
+		get() = follower.pose
 
 	object Subsystems {
 		lateinit var drive: CachingMecanumDrive
-		lateinit var odometry: OTOS
 
 		lateinit var lift: Lift
 		lateinit var extension: Extension
@@ -70,7 +72,7 @@ object Robot : ISubsystem {
 		lateinit var deposit: Deposit
 		lateinit var hang: Hang
 
-		fun all() = listOf(lift, intake, hang, deposit, extension, odometry)
+		fun all() = listOf(lift, intake, hang, deposit, extension)
 	}
 
 	object Motors {
@@ -265,8 +267,6 @@ object Robot : ISubsystem {
 			Motors.Drive.backRight
 		)
 
-		Subsystems.odometry = OTOS(hw[Names.I2C.otos] as SparkFunOTOSCorrected)
-
 		Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
 		Subsystems.extension = Extension(Motors.extension)
 
@@ -295,7 +295,9 @@ object Robot : ISubsystem {
 	}
 
 	override fun read() {
-		if (voltageTimer.milliseconds() > 500.0 && voltageSensor.hasNext()) {
+		follower.update()
+
+		if (voltageTimer.milliseconds() > 100.0 && voltageSensor.hasNext()) {
 			voltage = voltageSensor.next().voltage
 		}
 

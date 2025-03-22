@@ -4,14 +4,11 @@ import com.acmerobotics.dashboard.config.Config
 import com.arcrobotics.ftclib.command.ParallelRaceGroup
 import com.arcrobotics.ftclib.command.WaitCommand
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.teamcode.command.CommandTemplate
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.utility.controller.PIDFController
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
-import kotlin.math.abs
-import kotlin.math.hypot
 
 @Config
 class GoToPoint(val target: Pose2D, val multiplier: Double = 1.0) : CommandTemplate() {
@@ -33,7 +30,7 @@ class GoToPoint(val target: Pose2D, val multiplier: Double = 1.0) : CommandTempl
 	}
 
 	override fun execute() {
-		val pose = Robot.Subsystems.odometry.pose
+		val pose = Robot.pose
 
 		xController.updateCoefficients(X.kP, X.kI, X.kD, X.kF, X.alpha)
 		yController.updateCoefficients(Y.kP, Y.kI, Y.kD, Y.kF, Y.alpha)
@@ -41,7 +38,7 @@ class GoToPoint(val target: Pose2D, val multiplier: Double = 1.0) : CommandTempl
 
 		val x = xController.calculate(pose.x, target.x) * multiplier
 		val y = yController.calculate(pose.y, target.y) * multiplier
-		val h = hController.calculate(AngleUnit.normalizeDegrees(pose.h - target.h)) * multiplier
+//		val h = hController.calculate(AngleUnit.normalizeDegrees(pose.h - target.h)) * multiplier
 
 		Robot.telemetry.addData("x", x)
 		Robot.telemetry.addData("y", y)
@@ -51,25 +48,25 @@ class GoToPoint(val target: Pose2D, val multiplier: Double = 1.0) : CommandTempl
 		// (-y, +x, -t)
 		// (y, -x, -t)
 
-		Robot.Subsystems.drive.driveFieldCentric(y, -x, -h, pose.h)
+//		Robot.Subsystems.drive.driveFieldCentric(y, -x, -h, pose.h)
 	}
 
 	override fun isFinished(): Boolean {
 		if (Globals.target != target) return true
 
-		val pose = Robot.Subsystems.odometry.pose
-
-		val dx = target.x - pose.x
-		val dy = target.y - pose.y
-
-		val ds = hypot(dx, dy)
-		val da = AngleUnit.normalizeDegrees(pose.h - target.h)
-
-		Globals.da = da
-		Globals.dx = dx
-		Globals.dy = dy
-
-		return (ds <= DISPLACEMENT_TOLERANCE) && (abs(da) <= ANGULAR_TOLERANCE)
+//		val pose = Robot.pose
+//
+//		val dx = target.x - pose.x
+//		val dy = target.y - pose.y
+//
+//		val ds = hypot(dx, dy)
+//		val da = AngleUnit.normalizeDegrees(pose.h - target.h)
+//
+//		Globals.da = da
+//		Globals.dx = dx
+//		Globals.dy = dy
+//
+//		return (ds <= DISPLACEMENT_TOLERANCE) && (abs(da) <= ANGULAR_TOLERANCE)
 	}
 
 	override fun end(interrupted: Boolean) {

@@ -55,8 +55,8 @@ class SensorSparkFunOTOSKt : LinearOpMode() {
 			telemetry.addLine()
 
 			// Log the position to the telemetry
-			telemetry.addData("X coordinate", pos.x)
-			telemetry.addData("Y coordinate", pos.y)
+			telemetry.addData("X coordinate", pos.x * (48.0 / 40.38) * (48.0 / 52.0))
+			telemetry.addData("Y coordinate", pos.y * (48.0 / 40.38) * (48.0 / 52.0) * (48.0 / 42.9) * (48.0 / 50.6) * (48.0 / 46.17))
 			telemetry.addData("Heading angle", pos.h)
 
 			// Update the telemetry on the driver station
@@ -108,7 +108,7 @@ class SensorSparkFunOTOSKt : LinearOpMode() {
 		// multiple speeds to get an average, then set the linear scalar to the
 		// inverse of the error. For example, if you move the robot 100 inches and
 		// the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
-		myOtos!!.setLinearScalar(1.00)
+		myOtos!!.setLinearScalar(1.127)
 		myOtos!!.setAngularScalar(3600.0 / 3597.5)
 
 		// The IMU on the OTOS includes a gyroscope and accelerometer, which could
