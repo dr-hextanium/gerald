@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.pedropathing.follower.Follower
+import com.pedropathing.util.Constants
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
@@ -33,6 +34,8 @@ import org.firstinspires.ftc.teamcode.hardware.subsystem.OTOS
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Turret
 import org.firstinspires.ftc.teamcode.hardware.wrapper.SparkFunOTOSCorrected
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
+import org.firstinspires.ftc.teamcode.pedro.constants.FConstants
+import org.firstinspires.ftc.teamcode.pedro.constants.LConstants
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 /**
@@ -266,6 +269,10 @@ object Robot : ISubsystem {
 			Motors.Drive.backLeft,
 			Motors.Drive.backRight
 		)
+
+		Constants.setConstants(FConstants::class.java, LConstants::class.java)
+
+		follower = Follower(hw)
 
 		Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
 		Subsystems.extension = Extension(Motors.extension)

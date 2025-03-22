@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.hardware.Positions
 import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
+import org.firstinspires.ftc.teamcode.hardware.Robot.follower
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 abstract class BaseTemplate : OpMode() {
@@ -41,8 +42,6 @@ abstract class BaseTemplate : OpMode() {
 		Robot.init(hardwareMap, telemetry, gamepad1, gamepad2)
 
 		initialize()
-
-		Subsystems.odometry.reset()
 
 		telemetry.addLine("initializing")
 	}

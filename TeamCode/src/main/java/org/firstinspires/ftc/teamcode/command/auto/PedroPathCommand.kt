@@ -8,10 +8,15 @@ import org.firstinspires.ftc.teamcode.command.CommandTemplate
 class PedroPathCommand(
 	val path: PathChain,
 	val follower: Follower,
+	val maxPower: Double = 1.0,
+	val holdEnd: Boolean = true,
 	val time: ElapsedTime = ElapsedTime(),
-	val finished: () -> Boolean = { follower.isBusy }
+	val finished: () -> Boolean = { !follower.isBusy }
 ) : CommandTemplate() {
-	override fun initialize() = follower.followPath(path, true)
+	override fun initialize() {
+		follower.setMaxPower(maxPower)
+		follower.followPath(path, holdEnd)
+	}
 
 	override fun execute() = follower.update()
 

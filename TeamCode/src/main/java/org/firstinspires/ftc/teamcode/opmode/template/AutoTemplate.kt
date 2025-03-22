@@ -22,7 +22,8 @@ import org.firstinspires.ftc.teamcode.pedro.constants.LConstants
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 open class AutoTemplate(val start: Pose) : BaseTemplate() {
-	val follower by lazy { Follower(hardwareMap) }
+	val follower
+		get() = Robot.follower
 
 	override fun initialize() {
 		GamepadButton(primary, GamepadKeys.Button.DPAD_DOWN)
