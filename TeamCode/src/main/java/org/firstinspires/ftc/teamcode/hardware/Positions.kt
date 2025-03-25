@@ -53,7 +53,7 @@ object Positions {
 
         object Claw {
             val OPEN = 1.5 // degrees
-            val CLOSED = 0.0 // degrees
+            val CLOSED = 0.15 // degrees
             val CLOSED_SAMPLE = 0.25 //degrees
         }
     }

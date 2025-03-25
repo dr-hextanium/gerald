@@ -5,7 +5,6 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.arcrobotics.ftclib.command.WaitCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.command.auto.PedroPathCommand
-import org.firstinspires.ftc.teamcode.command.sequences.NoLongerThan
 import org.firstinspires.ftc.teamcode.command.sequences.specimen.PrepScoringSpecimen
 import org.firstinspires.ftc.teamcode.command.sequences.specimen.ScoreSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Robot
@@ -18,56 +17,73 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 
 	val preload by lazy {
 		SequentialCommandGroup(
-			ParallelCommandGroup(
-				PedroPathCommand(paths.preload, follower, 0.6, holdEnd = true),
-
-				SequentialCommandGroup(
-					WaitCommand(250),
-					PrepScoringSpecimen(),
-				)
-			),
+			PedroPathCommand(paths.preload, follower, maxPower = 0.7, holdEnd = true)
 		)
 	}
 
-	val goToAndPushFirst by lazy {
+	val firstPush by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.behindAndPushFirst, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.firstPush, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
-	val pushSecond by lazy {
+	val secondPush by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.pushSecond, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.secondPush, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
-	val pushThird by lazy {
+	val thirdPush by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.pushThird, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.thirdPush, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
-	val pullBack by lazy {
+	val grabSecond by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.pullBack, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.grabSecond, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
-	val scoreSecondSpecimen by lazy {
+	val scoreSecond by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.scoreSecondSpecimen, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.scoreSecond, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
-	val grabFromWall by lazy {
+	val grabThird by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.grabFromWall, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.grabThird, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
-	val scoreFromWall by lazy {
+	val scoreThird by lazy {
 		SequentialCommandGroup(
-			PedroPathCommand(paths.scoreFromWall, follower, 1.0, holdEnd = true)
+			PedroPathCommand(paths.scoreThird, follower, maxPower = 1.0, holdEnd = true)
+		)
+	}
+
+	val grabFourth by lazy {
+		SequentialCommandGroup(
+			PedroPathCommand(paths.grabFourth, follower, maxPower = 1.0, holdEnd = true)
+		)
+	}
+
+	val scoreFourth by lazy {
+		SequentialCommandGroup(
+			PedroPathCommand(paths.scoreFourth, follower, maxPower = 1.0, holdEnd = true)
+		)
+	}
+
+	val grabFifth by lazy {
+		SequentialCommandGroup(
+			PedroPathCommand(paths.grabFifth, follower, maxPower = 1.0, holdEnd = true)
+		)
+	}
+
+	val scoreFifth by lazy {
+		SequentialCommandGroup(
+			PedroPathCommand(paths.scoreFifth, follower, maxPower = 1.0, holdEnd = true)
 		)
 	}
 
@@ -76,41 +92,38 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 
 		Robot.scheduler.schedule(
 			SequentialCommandGroup(
-				// preload
-				NoLongerThan(preload, 2000),
+				ParallelCommandGroup(
+					preload,
+					SequentialCommandGroup(
+						WaitCommand(250),
+						PrepScoringSpecimen()
+					)
+				),
+
 				ScoreSpecimen(),
 
-				// push all
-				goToAndPushFirst,
-				pushSecond,
-				pushThird,
+				firstPush,
+				secondPush,
+				thirdPush,
 
-				// second specimen
-				pullBack,
+				grabSecond,
 				PrepScoringSpecimen(),
-
-				scoreSecondSpecimen,
+				scoreSecond,
 				ScoreSpecimen(),
 
-				// third specimen
-				grabFromWall,
+				grabThird,
 				PrepScoringSpecimen(),
-
-				scoreFromWall,
+				scoreThird,
 				ScoreSpecimen(),
 
-				// fourth specimen
-				grabFromWall,
+				grabFourth,
 				PrepScoringSpecimen(),
-
-				scoreFromWall,
+				scoreFourth,
 				ScoreSpecimen(),
 
-				// fifth specimen
-				grabFromWall,
+				grabFifth,
 				PrepScoringSpecimen(),
-
-				scoreFromWall,
+				scoreFifth,
 				ScoreSpecimen(),
 			)
 		)

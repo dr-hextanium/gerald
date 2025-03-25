@@ -10,118 +10,168 @@ import com.pedropathing.pathgen.Point
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class FiveSpecimenPaths(val follower: Follower) {
-	val preload: PathChain = PathBuilder()
+	var preload: PathChain = PathBuilder()
 		.addPath(
-			BezierLine(
-				Point(6.500, 66.000, Point.CARTESIAN),
-				Point(43.500, 66.000, Point.CARTESIAN)
+			BezierCurve(
+				Point(6.500, 65.000, Point.CARTESIAN),
+				Point(35.500, 63.000, Point.CARTESIAN),
+				Point(scoreX, 77.000, Point.CARTESIAN)
 			)
 		)
-		.setZeroPowerAccelerationMultiplier(4.0)
 		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	val behindAndPushFirst: PathChain = PathBuilder()
+	var firstPush: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
-				Point(43.000, 66.000, Point.CARTESIAN),
-				Point(28.597, 65.147, Point.CARTESIAN),
-				Point(20.982, 26.059, Point.CARTESIAN),
-				Point(43.149, 42.134, Point.CARTESIAN),
-				Point(49.918, 39.934, Point.CARTESIAN),
-				Point(95.605, 21.152, Point.CARTESIAN),
-				Point(34.012, 20.475, Point.CARTESIAN),
-				Point(13.368, 23.690, Point.CARTESIAN)
+				Point(43.250, 77.000, Point.CARTESIAN),
+				Point(28.500, 65.000, Point.CARTESIAN),
+				Point(21.000, 26.000, Point.CARTESIAN),
+				Point(43.000, 42.000, Point.CARTESIAN),
+				Point(50.000, 40.000, Point.CARTESIAN),
+				Point(95.500, 21.000, Point.CARTESIAN),
+				Point(34.000, 20.500, Point.CARTESIAN),
+				Point(13.500, 24.000, Point.CARTESIAN)
 			)
 		)
+		.setPathEndTimeoutConstraint(0.0)
 		.setZeroPowerAccelerationMultiplier(6.0)
 		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	val pushSecond: PathChain = PathBuilder()
+	var secondPush: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
-				Point(15.500, 24.000, Point.CARTESIAN),
+				Point(13.500, 24.000, Point.CARTESIAN),
 				Point(77.000, 26.000, Point.CARTESIAN),
 				Point(68.000, 9.000, Point.CARTESIAN),
 				Point(15.500, 13.000, Point.CARTESIAN)
 			)
 		)
-		.setPathEndTValueConstraint(0.990)
+		.setPathEndTimeoutConstraint(0.0)
 		.setZeroPowerAccelerationMultiplier(6.0)
 		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	val pushThird: PathChain = PathBuilder()
+	var thirdPush: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
 				Point(15.500, 13.000, Point.CARTESIAN),
 				Point(41.250, 14.250, Point.CARTESIAN),
-				Point(101.358, 5.076, Point.CARTESIAN),
-				Point(29.443, 7.784, Point.CARTESIAN),
-				Point(14.891, 5.415, Point.CARTESIAN)
+				Point(101.000, 5.000, Point.CARTESIAN),
+				Point(29.500, 7.500, Point.CARTESIAN),
+				Point(15.500, 7.000, Point.CARTESIAN)
 			)
 		)
-		.setPathEndTValueConstraint(0.990)
-		.setZeroPowerAccelerationMultiplier(6.0)
+		.setPathEndTimeoutConstraint(0.0)
+		.setZeroPowerAccelerationMultiplier(5.0)
 		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	val pullBack: PathChain = PathBuilder()
+	var grabSecond: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
-				Point(14.891, 5.415, Point.CARTESIAN),
-				Point(16.414, 12.860, Point.CARTESIAN),
-				Point(6.599, 18.106, Point.CARTESIAN)
+				Point(15.500, 7.000, Point.CARTESIAN),
+				Point(17.500, 20.000, Point.CARTESIAN),
+				Point(6.500, 22.500, Point.CARTESIAN)
 			)
 		)
-		.setZeroPowerAccelerationMultiplier(6.0)
-		.setLinearHeadingInterpolation(Math.toRadians(0.0), Math.toRadians(0.0))
+		.setPathEndTimeoutConstraint(0.0)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	var scoreSecondSpecimen: PathChain = PathBuilder()
+	var scoreSecond: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
-				Point(6.500, 7.000, Point.CARTESIAN),
-				Point(17.000, 70.500, Point.CARTESIAN),
-				Point(43.500, 71.500, Point.CARTESIAN)
+				Point(6.500, 22.500, Point.CARTESIAN),
+				Point(25.000, 69.000, Point.CARTESIAN),
+				Point(scoreX, 74.000, Point.CARTESIAN)
 			)
 		)
-		.setZeroPowerAccelerationMultiplier(4.0)
-		.setLinearHeadingInterpolation(Math.toRadians(0.0), Math.toRadians(0.0))
+		.setPathEndTimeoutConstraint(0.0)
+		.setZeroPowerAccelerationMultiplier(3.5)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	var grabFromWall: PathChain = PathBuilder()
+	var grabThird: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
-				Point(43.000, 71.500, Point.CARTESIAN),
-				Point(12.500, 70.000, Point.CARTESIAN),
-				Point(34.500, 31.500, Point.CARTESIAN),
-				Point(6.500, 35.000, Point.CARTESIAN)
+				Point(43.250, 74.000, Point.CARTESIAN),
+				Point(16.000, 64.000, Point.CARTESIAN),
+				Point(38.000, 32.500, Point.CARTESIAN),
+				Point(grabPose)
 			)
 		)
-		.setLinearHeadingInterpolation(Math.toRadians(0.0), Math.toRadians(0.0))
+		.setPathEndTimeoutConstraint(0.0)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
-	var scoreFromWall: PathChain = PathBuilder()
+	var scoreThird: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(6.500, 35.000, Point.CARTESIAN),
-				Point(43.000, 68.500, Point.CARTESIAN)
+				Point(grabPose),
+				Point(scoreX, 71.000, Point.CARTESIAN)
 			)
 		)
-		.setLinearHeadingInterpolation(Math.toRadians(0.0), Math.toRadians(0.0))
+		.setPathEndTimeoutConstraint(0.0)
+		.setZeroPowerAccelerationMultiplier(3.5)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
+		.build()
+
+	var grabFourth: PathChain = PathBuilder()
 		.addPath(
-			BezierLine(
-				Point(43.000, 68.500, Point.CARTESIAN),
-				Point(43.000, 72.500, Point.CARTESIAN)
+			BezierCurve(
+				Point(43.250, 71.000, Point.CARTESIAN),
+				Point(16.000, 64.000, Point.CARTESIAN),
+				Point(38.000, 32.500, Point.CARTESIAN),
+				Point(grabPose)
 			)
 		)
-		.setZeroPowerAccelerationMultiplier(6.0)
-		.setLinearHeadingInterpolation(Math.toRadians(0.0), Math.toRadians(0.0))
+		.setPathEndTimeoutConstraint(0.0)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
+		.build()
+
+	var scoreFourth: PathChain = PathBuilder()
+		.addPath(
+			BezierCurve(
+				Point(grabPose),
+				Point(22.500, 62.000, Point.CARTESIAN),
+				Point(scoreX, 68.000, Point.CARTESIAN)
+			)
+		)
+		.setPathEndTimeoutConstraint(0.0)
+		.setZeroPowerAccelerationMultiplier(3.5)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
+		.build()
+
+	var grabFifth: PathChain = PathBuilder()
+		.addPath(
+			BezierCurve(
+				Point(43.250, 68.000, Point.CARTESIAN),
+				Point(16.000, 64.000, Point.CARTESIAN),
+				Point(38.000, 32.500, Point.CARTESIAN),
+				Point(grabPose)
+			)
+		)
+		.setPathEndTimeoutConstraint(0.0)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
+		.build()
+
+	var scoreFifth: PathChain = PathBuilder()
+		.addPath(
+			BezierCurve(
+				Point(grabPose),
+				Point(22.500, 62.000, Point.CARTESIAN),
+				Point(scoreX, 66.000, Point.CARTESIAN)
+			)
+		)
+		.setZeroPowerAccelerationMultiplier(3.5)
+		.setLinearHeadingInterpolation(0.deg, 0.deg)
 		.build()
 
 	companion object {
-		val startPose = Pose(6.5, 66.0, 0.deg)
+		val startPose = Pose(6.5, 65.0, 0.deg)
+		val grabPose = Pose(6.5, 35.0, 0.deg)
+		val scoreX = 43.500
 	}
 }
