@@ -5,28 +5,26 @@ import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
-import org.firstinspires.ftc.teamcode.command.deposit.OpenDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.ToggleDeposit
 import org.firstinspires.ftc.teamcode.command.hang.ExtendHang
 import org.firstinspires.ftc.teamcode.command.hang.RetractHang
 import org.firstinspires.ftc.teamcode.command.hang.StopHang
-import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
 import org.firstinspires.ftc.teamcode.command.intake.ToggleIntake
-import org.firstinspires.ftc.teamcode.command.intake.TurnTurret
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntakeRelatively
 import org.firstinspires.ftc.teamcode.command.lift.NudgeLift
-import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
+import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.PrimarySquareBind
 import org.firstinspires.ftc.teamcode.command.sequences.SecondaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.sample.Transfer
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
-import org.firstinspires.ftc.teamcode.hardware.Robot.Subsystems
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
-import org.firstinspires.ftc.teamcode.utility.functions.curve
 import org.firstinspires.ftc.teamcode.utility.functions.deg
-import java.util.concurrent.locks.Condition
+import org.firstinspires.ftc.teamcode.utility.functions.rad
+import org.firstinspires.ftc.teamcode.utility.functions.signedSquare
+import kotlin.math.abs
+import kotlin.math.sign
 
 @TeleOp
 class DriverControlled : BaseTemplate() {
@@ -83,36 +81,67 @@ class DriverControlled : BaseTemplate() {
 		GamepadButton(primary, GamepadKeys.Button.START)
 			.whenPressed(NudgeLift(5.0))
 
-//		GamepadButton(primary, CIRCLE)
-//			.whenPressed(
-//				ConditionalCommand(
-//					InstantCommand({ mode = Mode.SAMPLE }),
-//					InstantCommand({ mode = Mode.SPECIMEN })
-//				) { mode == Mode.SPECIMEN }
-//			)
+		GamepadButton(primary, CIRCLE)
+			.whenPressed(
+				ConditionalCommand(
+					InstantCommand({ mode = Mode.SAMPLE }),
+					InstantCommand({ mode = Mode.SPECIMEN })
+				) { mode == Mode.SPECIMEN }
+			)
+	}
+
+	override fun start() {
+		super.start()
+
+		Robot.follower.startTeleopDrive()
 	}
 
 	override fun cycle() {
 		val pose = Robot.follower.pose
-		val heading = pose.heading
-		val x = pose.x
-		val y = pose.y
+		val extended = Robot.Subsystems.extension.extended
 
-		Subsystems.drive.driveFieldCentric(
-			-curve(Robot.gamepad1.leftX),
-			-curve(Robot.gamepad1.leftY),
-			-curve(Robot.gamepad1.rightX) * 0.5,
-			heading
+		val input = object {
+			val x = -primary.leftX
+			val y = primary.leftY
+			val omega = -primary.rightX
+		}
+
+		var powers = Inputs(
+			x = input.x,
+			y = input.y * 1.1,
+			omega = input.omega * 0.8
 		)
 
-		telemetry.addData("heading", heading)
-		telemetry.addData("x", x)
-		telemetry.addData("y", y)
+		if (extended) {
+			powers = Inputs(
+				x = 0.3 * powers.x.signedSquare,
+				y = 0.3 * powers.y.signedSquare,
+				omega = powers.omega.signedSquare
+			)
+		}
+
+		Robot.follower.setTeleOpMovementVectors(
+			powers.y,
+			powers.x * 1.1,
+			powers.omega * 0.5,
+			false
+		)
+
+		telemetry.addData("heading", pose.heading.rad)
+		telemetry.addData("x", pose.x)
+		telemetry.addData("y", pose.y)
 		telemetry.addData("mode", mode)
+		telemetry.addData("extended", extended)
 	}
 
 	enum class Mode {
 		SAMPLE,
 		SPECIMEN
 	}
+
+	data class Inputs(
+		val x: Double,
+		val y: Double,
+		val omega: Double
+	)
 }

@@ -65,5 +65,10 @@ object Bounds {
             Bound(0.0, 1.0),
             Bound(0.deg, 355.deg),
         )
+
+        val extension = UsefulServoRange(
+            Bound(0.0, 1.0),
+            Bound(0.deg, 355.deg),
+        )
     }
 }

@@ -5,6 +5,7 @@ import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.arcrobotics.ftclib.command.WaitCommand
 import org.firstinspires.ftc.teamcode.command.deposit.CloseDeposit
+import org.firstinspires.ftc.teamcode.command.deposit.ExtendDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
 import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
@@ -12,7 +13,7 @@ import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
 import org.firstinspires.ftc.teamcode.hardware.Positions.Lift
 import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
 
-class PrepScoringSpecimen(val lift: Boolean = true) : SequentialCommandGroup(
+class PrepScoringSpecimen(val lift: Boolean = true, endDelay: Boolean = false) : SequentialCommandGroup(
 	OpenIntake(),
 	CloseDeposit(),
 
@@ -20,14 +21,24 @@ class PrepScoringSpecimen(val lift: Boolean = true) : SequentialCommandGroup(
 
 	ParallelCommandGroup(
 		if (lift) {
-			LiftToUntil(Lift.CLEARANCE, time = 500)
+			LiftToUntil(Lift.HIGH_CHAMBER, time = 750)
 		} else InstantCommand(),
-
-		ParallelCommandGroup(
-			SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
-			PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
-		),
+		SequentialCommandGroup(
+			WaitCommand(250),
+			ParallelCommandGroup(
+				SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
+				PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
+			),
+		)
 	),
 
-	WaitCommand(100),
+	WaitCommand(350),
+
+	ExtendDeposit(),
+
+	if (endDelay) {
+		WaitCommand(100)
+	} else {
+		InstantCommand()
+	}
 )

@@ -4,18 +4,23 @@ import com.acmerobotics.dashboard.config.Config
 import com.qualcomm.robotcore.hardware.DcMotor
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
+import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
 import kotlin.math.abs
 
 @Config
 class Extension(
-	val motor: CachingDcMotorEx
+	val motor: CachingDcMotorEx,
+	val encoder: CachingDcMotorEx
 ) : ISubsystem {
 	val controller = VCPIDFController(kP, kI, kD, kF, 13.0)
 
 	var position = 0.0
 	var target = 0.0
 	var power = 0.0
+
+	val extended: Boolean
+		get() = target > 1.0
 
 	override fun reset() {
 		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
@@ -31,13 +36,17 @@ class Extension(
 	}
 
 	override fun read() {
-		position = -(motor.currentPosition) * inchesPerTick
+		position = (encoder.currentPosition) * inchesPerTick
 	}
 
 	override fun update() {
 		controller.updateCoefficients(kP, kI, kD, kF, alpha)
 
 		power = controller.calculate(position, target)
+
+		Robot.telemetry.addData("extendo power", power)
+		Robot.telemetry.addData("extendo position", position)
+		Robot.telemetry.addData("extendo target", target)
 	}
 
 	override fun write() {
@@ -50,7 +59,7 @@ class Extension(
 
 	companion object {
 		@JvmField
-		var kP = 0.05
+		var kP = 0.06
 		@JvmField
 		var kI = 0.005
 		@JvmField

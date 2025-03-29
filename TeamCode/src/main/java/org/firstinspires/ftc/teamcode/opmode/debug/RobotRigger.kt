@@ -27,6 +27,7 @@ class RobotRigger : BaseTemplate() {
         Robot.Subsystems.deposit.raiseTo(depositArmAngle.deg)
         Robot.Subsystems.deposit.pitchTo(depositPivotAngle.deg)
         Robot.Subsystems.deposit.claw.manual(backClawAngle)
+        Robot.Subsystems.deposit.extension.position = extensionAngle.deg
 
         telemetry.addData("lift power", lift.power)
         telemetry.addData("lift position", lift.position)
@@ -58,6 +59,9 @@ class RobotRigger : BaseTemplate() {
 
         @JvmField
         var depositPivotAngle = 7.0
+
+        @JvmField
+        var extensionAngle = 0.0
 
         @JvmField
         var intakeClawTwist = 0.0

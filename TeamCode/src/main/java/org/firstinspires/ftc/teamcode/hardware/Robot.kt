@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.pedropathing.follower.Follower
+import com.pedropathing.localization.Encoder
 import com.pedropathing.util.Constants
 import com.qualcomm.hardware.lynx.LynxModule
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS
@@ -67,8 +68,6 @@ object Robot : ISubsystem {
 		get() = follower.pose
 
 	object Subsystems {
-		lateinit var drive: CachingMecanumDrive
-
 		lateinit var lift: Lift
 		lateinit var extension: Extension
 		lateinit var intake: Intake
@@ -79,7 +78,10 @@ object Robot : ISubsystem {
 	}
 
 	object Motors {
-		lateinit var extension: CachingDcMotorEx
+		object Extension {
+			lateinit var motor: CachingDcMotorEx
+			lateinit var encoder: CachingDcMotorEx
+		}
 
 		object Lift {
 			lateinit var left: CachingDcMotorEx
@@ -87,22 +89,12 @@ object Robot : ISubsystem {
 			lateinit var encoder: CachingDcMotorEx
 		}
 
-		object Drive {
-			lateinit var frontRight: CachingDcMotorEx
-			lateinit var frontLeft: CachingDcMotorEx
-			lateinit var backRight: CachingDcMotorEx
-			lateinit var backLeft: CachingDcMotorEx
-		}
-
 		fun all() = listOf(
-			extension,
+			Extension.motor,
+			Extension.encoder,
 			Lift.left,
 			Lift.right,
 			Lift.encoder,
-			Drive.frontRight,
-			Drive.frontLeft,
-			Drive.backRight,
-			Drive.backLeft
 		)
 	}
 
@@ -125,6 +117,7 @@ object Robot : ISubsystem {
 			lateinit var right: UsefulServo
 			lateinit var pivot: UsefulServo
 			lateinit var claw: UsefulServo
+			lateinit var extension: UsefulServo
 		}
 
 		object Hang {
@@ -204,15 +197,9 @@ object Robot : ISubsystem {
 			)
 
 			Servos.Deposit.left = UsefulServo(
-				hw[Names.Servos.Deposit.left] as Servo,
+				hw[Names.Servos.Deposit.arm] as Servo,
 				Bounds.Deposit.left,
 				reversed = true
-			)
-
-			Servos.Deposit.right = UsefulServo(
-				hw[Names.Servos.Deposit.right] as Servo,
-				Bounds.Deposit.right,
-				reversed = false
 			)
 
 			Servos.Deposit.pivot = UsefulServo(
@@ -224,6 +211,12 @@ object Robot : ISubsystem {
 			Servos.Deposit.claw = UsefulServo(
 				hw[Names.Servos.Deposit.claw] as Servo,
 				Bounds.Deposit.claw,
+				reversed = false
+			)
+
+			Servos.Deposit.extension = UsefulServo(
+				hw[Names.Servos.Deposit.extension] as Servo,
+				Bounds.Deposit.extension,
 				reversed = false
 			)
 
@@ -246,36 +239,24 @@ object Robot : ISubsystem {
 
 		// Same deal here.
 		run {
-			Motors.extension = CachingDcMotorEx(hw[Names.Motors.extension] as DcMotorEx)
+			Motors.Extension.motor = CachingDcMotorEx(hw[Names.Motors.Extension.motor] as DcMotorEx)
+			Motors.Extension.encoder = CachingDcMotorEx(hw[Names.Motors.Extension.encoder] as DcMotorEx)
 			Motors.Lift.left = CachingDcMotorEx(hw[Names.Motors.Lift.left] as DcMotorEx)
 			Motors.Lift.right = CachingDcMotorEx(hw[Names.Motors.Lift.right] as DcMotorEx)
-			Motors.Drive.frontRight = CachingDcMotorEx(hw[Names.Motors.Drive.fr] as DcMotorEx)
-			Motors.Drive.frontLeft = CachingDcMotorEx(hw[Names.Motors.Drive.fl] as DcMotorEx)
-			Motors.Drive.backRight = CachingDcMotorEx(hw[Names.Motors.Drive.br] as DcMotorEx)
-			Motors.Drive.backLeft = CachingDcMotorEx(hw[Names.Motors.Drive.bl] as DcMotorEx)
 
 			// Set reversals in here as well.
 			// The ones listed are probably the ones you need to either reverse or unreverse.
 
 			Motors.Lift.left.direction = DcMotorSimple.Direction.REVERSE
-			Motors.extension.direction = DcMotorSimple.Direction.REVERSE
+			Motors.Extension.motor.direction = DcMotorSimple.Direction.REVERSE
+			Motors.Extension.encoder.direction = DcMotorSimple.Direction.REVERSE
 			// The drive motors don't need to be reversed here because the class will handle that.
 		}
 
-		Subsystems.drive = CachingMecanumDrive(
-			true,
-			Motors.Drive.frontLeft,
-			Motors.Drive.frontRight,
-			Motors.Drive.backLeft,
-			Motors.Drive.backRight
-		)
-
-		Constants.setConstants(FConstants::class.java, LConstants::class.java)
-
-		follower = Follower(hw)
+		follower = Follower(hw, FConstants::class.java, LConstants::class.java)
 
 		Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
-		Subsystems.extension = Extension(Motors.extension)
+		Subsystems.extension = Extension(Motors.Extension.motor, Motors.Extension.encoder)
 
 		val turret = Turret(Servos.turret, 79.deg)
 		val diffy = Diffy(Servos.Diffy.left, Servos.Diffy.right)
@@ -286,9 +267,10 @@ object Robot : ISubsystem {
 
 		val pivot = Servos.Deposit.pivot
 		val claw = Claw(Servos.Deposit.claw, Positions.Deposit.Claw.OPEN, Positions.Deposit.Claw.CLOSED)
-		val arm = Arm(Servos.Deposit.left, Servos.Deposit.right)
+		val arm = Arm(Servos.Deposit.left, null)
+		val extensionServo = Servos.Deposit.extension
 
-		Subsystems.deposit = Deposit(pivot, arm, claw)
+		Subsystems.deposit = Deposit(pivot, arm, claw, extensionServo)
 		Subsystems.hang = Hang(Servos.Hang.left1, Servos.Hang.left2, Servos.Hang.right1, Servos.Hang.right2)
 
 		scheduler.registerSubsystem(*Subsystems.all().toTypedArray())

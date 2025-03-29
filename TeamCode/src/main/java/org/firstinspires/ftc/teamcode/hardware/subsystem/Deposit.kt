@@ -2,8 +2,11 @@ package org.firstinspires.ftc.teamcode.hardware.subsystem
 
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 import org.firstinspires.ftc.teamcode.utility.functions.deg
+import kotlin.math.acos
+import kotlin.math.pow
+import kotlin.math.sqrt
 
-class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw) : ISubsystem {
+class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw, val extension: UsefulServo) : ISubsystem {
 	val all = listOf(arm, claw)
 
 	override fun reset() = all.forEach { it.reset() }
@@ -15,7 +18,20 @@ class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw) : ISubsystem
 
 	fun raiseTo(angle: Double) = arm.turn(angle)
 
-	fun open() = claw.open()
+	fun extendTo(x: Double) {
+		val numerator = x + sqrt(L.pow(2) - x.pow(2))
+		val denominator = 2.0 * R
 
+		val theta = acos(numerator / denominator)
+
+		extension.position = theta
+	}
+
+	fun open() = claw.open()
 	fun close() = claw.close()
+
+	companion object {
+		val L = 3.5
+		val R = 3.5
+	}
 }

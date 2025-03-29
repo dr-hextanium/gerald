@@ -20,10 +20,10 @@ object Names {
         }
 
         object Deposit {
-            const val left = "ldep"
-            const val right = "rdep"
+            const val arm = "adep"
             const val pivot = "pdep"
             const val claw = "cdep"
+            const val extension = "edep"
         }
 
         object Hang {
@@ -35,7 +35,10 @@ object Names {
     }
 
     object Motors {
-        const val extension = "e"
+        object Extension {
+            const val motor = "e"
+            const val encoder = "e enc"
+        }
 
         object Lift {
             const val left = "ll"

@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.paths.FiveSpecimenPaths
 
 @Autonomous(name = "5 Specimen")
 class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
-	val paths by lazy { FiveSpecimenPaths(follower) }
+	val paths by lazy { FiveSpecimenPaths() }
 
 	val preload by lazy {
 		SequentialCommandGroup(

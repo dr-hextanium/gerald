@@ -1,17 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmode.debug.servo
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 import kotlin.math.max
 import kotlin.math.sin
 
+@TeleOp
 class ServoRanger : BaseTemplate() {
 	var start = 0.deg
 	var end = 0.deg
 	var sweep = false
 
-	val servo by lazy { Robot.Servos.Deposit.claw }
+	val servo by lazy { Robot.Servos.Deposit.extension }
 	val range by lazy { servo.range.radians }
 
 	override fun initialize() {

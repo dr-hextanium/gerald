@@ -6,6 +6,7 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.pedropathing.follower.Follower
 import com.pedropathing.localization.Pose
 import com.pedropathing.util.Constants
+import org.firstinspires.ftc.teamcode.command.deposit.ExtendDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.OpenDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
@@ -41,10 +42,11 @@ open class AutoTemplate(val start: Pose) : BaseTemplate() {
 			TuckIntake(),
 			ParallelCommandGroup(
 				SwingDeposit(30.deg),
-				PivotDeposit(100.deg)
+				PivotDeposit(355.deg)
 			),
 			OpenIntake(),
 			OpenDeposit(),
+			ExtendDeposit(),
 		)
 
 		Globals.AUTO = true
