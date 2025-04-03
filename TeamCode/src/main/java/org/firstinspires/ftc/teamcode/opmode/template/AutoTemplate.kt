@@ -15,7 +15,9 @@ import org.firstinspires.ftc.teamcode.command.hang.ExtendHang
 import org.firstinspires.ftc.teamcode.command.hang.RetractHang
 import org.firstinspires.ftc.teamcode.command.hang.StopHang
 import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
+import org.firstinspires.ftc.teamcode.command.intake.ToggleIntake
 import org.firstinspires.ftc.teamcode.command.intake.TuckIntake
+import org.firstinspires.ftc.teamcode.command.sequences.sample.BringToTransfer
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.pedro.constants.FConstants
@@ -27,12 +29,18 @@ open class AutoTemplate(val start: Pose) : BaseTemplate() {
 		get() = Robot.follower
 
 	override fun initialize() {
+		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
+			.whenPressed(ToggleIntake())
+
 		GamepadButton(primary, GamepadKeys.Button.DPAD_DOWN)
 			.whenPressed(ToggleDeposit())
 
 		GamepadButton(primary, GamepadKeys.Button.DPAD_LEFT)
 			.whileHeld(RetractHang())
 			.whenReleased(StopHang())
+
+		GamepadButton(primary, CIRCLE)
+			.whenPressed(BringToTransfer())
 
 		GamepadButton(primary, GamepadKeys.Button.DPAD_RIGHT)
 			.whileHeld(ExtendHang())

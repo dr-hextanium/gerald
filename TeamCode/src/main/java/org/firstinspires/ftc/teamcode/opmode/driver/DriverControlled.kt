@@ -4,6 +4,7 @@ import com.arcrobotics.ftclib.command.ConditionalCommand
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
+import com.pedropathing.localization.Pose
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.command.deposit.ToggleDeposit
 import org.firstinspires.ftc.teamcode.command.hang.ExtendHang
@@ -16,15 +17,14 @@ import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
 import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.PrimarySquareBind
 import org.firstinspires.ftc.teamcode.command.sequences.SecondaryCrossBind
-import org.firstinspires.ftc.teamcode.command.sequences.sample.Transfer
+import org.firstinspires.ftc.teamcode.command.sequences.SecondarySquareBind
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 import org.firstinspires.ftc.teamcode.utility.functions.deg
+import org.firstinspires.ftc.teamcode.utility.functions.halfLinearHalfQuadratic
 import org.firstinspires.ftc.teamcode.utility.functions.rad
 import org.firstinspires.ftc.teamcode.utility.functions.signedSquare
-import kotlin.math.abs
-import kotlin.math.sign
 
 @TeleOp
 class DriverControlled : BaseTemplate() {
@@ -37,7 +37,7 @@ class DriverControlled : BaseTemplate() {
 			.whenPressed(
 				ConditionalCommand(
 					PrimarySquareBind(),
-					Transfer()
+					SecondarySquareBind()
 				) { mode == Mode.SPECIMEN }
 			)
 
@@ -53,7 +53,7 @@ class DriverControlled : BaseTemplate() {
 			)
 
 		GamepadButton(primary, GamepadKeys.Button.LEFT_STICK_BUTTON)
-			.whenPressed(InstantCommand({ Robot.follower.resetOffset() }))
+			.whenPressed(InstantCommand({ Robot.follower.pose = Pose(Robot.pose.x, Robot.pose.y, 0.0) }))
 
 		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
 			.whenPressed(ToggleIntake())
@@ -84,8 +84,8 @@ class DriverControlled : BaseTemplate() {
 		GamepadButton(primary, CIRCLE)
 			.whenPressed(
 				ConditionalCommand(
-					InstantCommand({ mode = Mode.SAMPLE }),
-					InstantCommand({ mode = Mode.SPECIMEN })
+					InstantCommand({ switchModeTo(Mode.SAMPLE) }),
+					InstantCommand({ switchModeTo(Mode.SPECIMEN) })
 				) { mode == Mode.SPECIMEN }
 			)
 	}
@@ -114,10 +114,18 @@ class DriverControlled : BaseTemplate() {
 
 		if (extended) {
 			powers = Inputs(
-				x = 0.3 * powers.x.signedSquare,
-				y = 0.3 * powers.y.signedSquare,
-				omega = powers.omega.signedSquare
+				x = 0.3 * powers.x.halfLinearHalfQuadratic,
+				y = 0.6 * powers.y.halfLinearHalfQuadratic,
+				omega = 0.85 * powers.omega.halfLinearHalfQuadratic + 0.05
 			)
+
+			if (gamepad1.left_trigger > 0.2) {
+				powers = Inputs(
+					x = 1.3 * powers.x,
+					y = 1.3 * powers.y,
+					omega = 1.1 * powers.omega,
+				)
+			}
 		}
 
 		Robot.follower.setTeleOpMovementVectors(
@@ -131,7 +139,11 @@ class DriverControlled : BaseTemplate() {
 		telemetry.addData("x", pose.x)
 		telemetry.addData("y", pose.y)
 		telemetry.addData("mode", mode)
-		telemetry.addData("extended", extended)
+	}
+
+	fun switchModeTo(mode: Mode) {
+		gamepad1.rumbleBlips(1)
+		this.mode = mode
 	}
 
 	enum class Mode {

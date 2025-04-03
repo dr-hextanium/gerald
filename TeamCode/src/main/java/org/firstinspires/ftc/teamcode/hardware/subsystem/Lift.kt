@@ -47,7 +47,7 @@ class Lift(
 
         val output = controller.calculate(position, target)
 
-        power = if (output.sign < 0) 0.0 else output
+        power = if (output.sign < 0) output / 2.0 else output
     }
 
     override fun write() {

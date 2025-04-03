@@ -24,7 +24,6 @@ class PrepScoringSpecimen(val lift: Boolean = true, endDelay: Boolean = false) :
 			LiftToUntil(Lift.HIGH_CHAMBER, time = 750)
 		} else InstantCommand(),
 		SequentialCommandGroup(
-			WaitCommand(250),
 			ParallelCommandGroup(
 				SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
 				PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
@@ -32,7 +31,7 @@ class PrepScoringSpecimen(val lift: Boolean = true, endDelay: Boolean = false) :
 		)
 	),
 
-	WaitCommand(350),
+	WaitCommand(100),
 
 	ExtendDeposit(),
 

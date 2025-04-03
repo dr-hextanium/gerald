@@ -15,6 +15,8 @@ object Positions {
             val ASIDE_TWIST = (-45).deg
             val TUCK_PITCH = 355.0.deg
 
+            val TRANSFER_INTERMEDIATE_PITCH = 90.deg
+
             val TRANSFER_SAMPLE_PITCH = 220.deg
         }
 
@@ -26,6 +28,8 @@ object Positions {
             val TUCK = 115.deg
 
             val TRANSFER_SAMPLE = 140.deg
+            val TRANSFER_INTERMEDIATE = 40.deg
+            val TRANSFER_INTERMEDIATE_SQUARED = ((TRANSFER_SAMPLE + TRANSFER_INTERMEDIATE) / 2.0) + 10.deg
         }
 
         object Turret {
@@ -41,7 +45,7 @@ object Positions {
             val SCORE_SPECIMEN = 10.deg
 
             val TRANSFER_SAMPLE = 43.deg
-            val SCORE_SAMPLE = 135.deg
+            val SCORE_SAMPLE = 130.deg
         }
 
         object Pivot {
@@ -49,7 +53,7 @@ object Positions {
             val SCORE_SPECIMEN = 335.deg
 
             val SCORE_SAMPLE = 175.deg
-            val TRANSFER_SAMPLE = 295.deg
+            val TRANSFER_SAMPLE = 290.deg
         }
 
         object Claw {
@@ -60,14 +64,14 @@ object Positions {
 
         object Extension {
             val RETRACTED = 180.deg
-            val EXTENDED = 100.deg
+            val EXTENDED = 90.deg
         }
     }
 
     object Lift {
         const val GRAB_SPECIMEN = 2.0 // inches
         const val HIGH_CHAMBER = 18.0 // inches //16.0 inches
-        const val HIGH_BASKET = 22.0 // inches, TODO
+        const val HIGH_BASKET = 24.0 // inches, TODO
     }
 
     object Extension {
