@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.command.auto.PedroPathCommand
 import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
+import org.firstinspires.ftc.teamcode.command.intake.TwistIntakeRelatively
 import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
+import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
 import org.firstinspires.ftc.teamcode.command.sequences.SecondaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.SecondarySquareBind
 import org.firstinspires.ftc.teamcode.command.sequences.sample.ScoreSample
@@ -15,6 +17,7 @@ import org.firstinspires.ftc.teamcode.hardware.Positions
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.AutoTemplate
 import org.firstinspires.ftc.teamcode.paths.FourSamplePaths
+import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 @Autonomous(name = "4 Sample")
 class FourSample : AutoTemplate(FourSamplePaths.startPose) {
@@ -83,7 +86,9 @@ class FourSample : AutoTemplate(FourSamplePaths.startPose) {
 
 				lineUpFirst,
 				SecondarySquareBind(),
-				SecondarySquareBind(),
+				WaitCommand(250),
+				IntakeSample(),
+				WaitCommand(250),
 				SecondaryCrossBind(),
 
 				scoreFirst,
@@ -92,7 +97,9 @@ class FourSample : AutoTemplate(FourSamplePaths.startPose) {
 
 				lineUpSecond,
 				SecondarySquareBind(),
-				SecondarySquareBind(),
+				WaitCommand(250),
+				IntakeSample(),
+				WaitCommand(250),
 				SecondaryCrossBind(),
 
 				scoreSecond,
@@ -101,7 +108,10 @@ class FourSample : AutoTemplate(FourSamplePaths.startPose) {
 
 				lineUpThird,
 				SecondarySquareBind(),
-				SecondarySquareBind(),
+				TwistIntakeRelatively((20.0).deg),
+				WaitCommand(250),
+				IntakeSample(),
+				WaitCommand(250),
 				SecondaryCrossBind(),
 
 				scoreThird,

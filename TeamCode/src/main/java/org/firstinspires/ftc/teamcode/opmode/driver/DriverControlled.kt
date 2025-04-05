@@ -108,15 +108,15 @@ class DriverControlled : BaseTemplate() {
 
 		var powers = Inputs(
 			x = input.x,
-			y = input.y * 1.1,
+			y = input.y * 1.3,
 			omega = input.omega * 0.8
 		)
 
 		if (extended) {
 			powers = Inputs(
-				x = 0.3 * powers.x.halfLinearHalfQuadratic,
+				x = 0.6 * powers.x.halfLinearHalfQuadratic,
 				y = 0.6 * powers.y.halfLinearHalfQuadratic,
-				omega = 0.85 * powers.omega.halfLinearHalfQuadratic + 0.05
+				omega = 0.6 * powers.omega.halfLinearHalfQuadratic
 			)
 
 			if (gamepad1.left_trigger > 0.2) {
@@ -128,10 +128,17 @@ class DriverControlled : BaseTemplate() {
 			}
 		}
 
+//		Robot.follower.setTeleOpMovementVectors(
+//			powers.y,
+//			powers.x * 1.1,
+//			powers.omega * 0.5,
+//			false
+//		)
+
 		Robot.follower.setTeleOpMovementVectors(
-			powers.y,
-			powers.x * 1.1,
-			powers.omega * 0.5,
+			powers.y * 0.5,
+			powers.x * 0.5,
+			powers.omega * 0.5   ,
 			false
 		)
 

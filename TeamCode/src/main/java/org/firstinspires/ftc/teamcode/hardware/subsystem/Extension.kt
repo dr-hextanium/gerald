@@ -59,7 +59,7 @@ class Extension(
 
 	companion object {
 		@JvmField
-		var kP = 0.095
+		var kP = 0.11
 		@JvmField
 		var kI = 0.007
 		@JvmField

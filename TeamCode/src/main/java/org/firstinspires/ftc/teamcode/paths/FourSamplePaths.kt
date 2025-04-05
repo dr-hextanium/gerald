@@ -24,7 +24,7 @@ object FourSamplePaths {
 		.addPath(
 			BezierLine(
 				scorePoint,
-				Point(16.000, 121.000, Point.CARTESIAN)
+				Point(16.000, 122.000, Point.CARTESIAN)
 			)
 		)
 		.setLinearHeadingInterpolation((-45).deg, 0.deg)
@@ -33,7 +33,7 @@ object FourSamplePaths {
 	var scoreFirst: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(16.000, 121.000, Point.CARTESIAN),
+				Point(16.000, 122.000, Point.CARTESIAN),
 				scorePoint
 			)
 		)
@@ -44,7 +44,7 @@ object FourSamplePaths {
 		.addPath(
 			BezierLine(
 				scorePoint,
-				Point(16.000, 131.500, Point.CARTESIAN)
+				Point(16.000, 130.500, Point.CARTESIAN)
 			)
 		)
 		.setLinearHeadingInterpolation((-45).deg, 0.deg)
@@ -53,7 +53,7 @@ object FourSamplePaths {
 	var scoreSecond: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(16.000, 131.500, Point.CARTESIAN),
+				Point(16.000, 130.500, Point.CARTESIAN),
 				scorePoint
 			)
 		)
@@ -64,7 +64,7 @@ object FourSamplePaths {
 		.addPath(
 			BezierLine(
 				scorePoint,
-				Point(19.500, 126.500, Point.CARTESIAN)
+				Point(19.000, 124.000, Point.CARTESIAN)
 			)
 		)
 		.setLinearHeadingInterpolation((-45).deg, 35.deg)
@@ -73,7 +73,7 @@ object FourSamplePaths {
 	var scoreThird: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(19.500, 126.500, Point.CARTESIAN),
+				Point(19.000, 124.000, Point.CARTESIAN),
 				scorePoint
 			)
 		)

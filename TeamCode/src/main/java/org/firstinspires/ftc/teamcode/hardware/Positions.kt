@@ -44,21 +44,21 @@ object Positions {
             val GRAB_SPECIMEN = 355.deg
             val SCORE_SPECIMEN = 10.deg
 
-            val TRANSFER_SAMPLE = 43.deg
-            val SCORE_SAMPLE = 130.deg
+            val TRANSFER_SAMPLE = 45.deg
+            val SCORE_SAMPLE = 150.deg
         }
 
         object Pivot {
             val GRAB_SPECIMEN = 355.deg
-            val SCORE_SPECIMEN = 335.deg
+            val SCORE_SPECIMEN = 300.deg// 335.deg
 
-            val SCORE_SAMPLE = 175.deg
+            val SCORE_SAMPLE = 190.deg
             val TRANSFER_SAMPLE = 290.deg
         }
 
         object Claw {
             val OPEN = 2.5 // degrees
-            val CLOSED = 0.25 // degrees
+            val CLOSED =  0.15 // degrees
             val CLOSED_SAMPLE = 1.65 // degrees
         }
 
@@ -69,9 +69,9 @@ object Positions {
     }
 
     object Lift {
-        const val GRAB_SPECIMEN = 2.0 // inches
-        const val HIGH_CHAMBER = 18.0 // inches //16.0 inches
-        const val HIGH_BASKET = 24.0 // inches, TODO
+        const val GRAB_SPECIMEN = 1.5 // 2.0 inches
+        const val HIGH_CHAMBER = 16.0 // inches //16.0 inches
+        const val HIGH_BASKET = 22.0 // inches, TODO
     }
 
     object Extension {

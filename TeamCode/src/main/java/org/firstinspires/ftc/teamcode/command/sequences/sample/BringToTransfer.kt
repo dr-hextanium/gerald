@@ -26,6 +26,6 @@ class BringToTransfer(safe: Boolean = true) : SequentialCommandGroup(
 	} else {
 		InstantCommand()
 	},
-	ExtensionToUntil(-2.0, time = 500),
+	ExtensionToUntil(-5.0, time = 600),
 	OpenDeposit(),
 )

@@ -47,7 +47,7 @@ class Lift(
 
         val output = controller.calculate(position, target)
 
-        power = if (output.sign < 0) output / 2.0 else output
+        power = output
     }
 
     override fun write() {
@@ -63,7 +63,7 @@ class Lift(
 
     companion object {
         @JvmField
-        var kP = 0.08
+        var kP = 0.1 //0.08
         @JvmField
         var kI = 0.00
         @JvmField
