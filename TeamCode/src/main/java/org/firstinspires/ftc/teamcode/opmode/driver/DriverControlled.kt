@@ -7,6 +7,9 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.pedropathing.localization.Pose
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import org.firstinspires.ftc.teamcode.command.deposit.ToggleDeposit
+import org.firstinspires.ftc.teamcode.command.extension.ExtensionTo
+import org.firstinspires.ftc.teamcode.command.extension.ExtensionToUntil
+import org.firstinspires.ftc.teamcode.command.extension.ExtensionWithVision
 import org.firstinspires.ftc.teamcode.command.hang.ExtendHang
 import org.firstinspires.ftc.teamcode.command.hang.RetractHang
 import org.firstinspires.ftc.teamcode.command.hang.StopHang
@@ -24,16 +27,25 @@ import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 import org.firstinspires.ftc.teamcode.utility.functions.halfLinearHalfQuadratic
 import org.firstinspires.ftc.teamcode.utility.functions.rad
-import org.firstinspires.ftc.teamcode.utility.functions.signedSquare
 
 @TeleOp
 class DriverControlled : BaseTemplate() {
 	private var mode = Mode.SPECIMEN
 
+	fun f() = Robot.Subsystems.vision.distance
+
 	override fun initialize() {
 		Globals.AUTO = false
 
 		GamepadButton(primary, SQUARE)
+			.whenPressed(
+				ConditionalCommand(
+					PrimarySquareBind(),
+					SecondarySquareBind()
+				) { mode == Mode.SPECIMEN }
+			)
+
+		GamepadButton(primary, CIRCLE)
 			.whenPressed(
 				ConditionalCommand(
 					PrimarySquareBind(),
@@ -68,6 +80,9 @@ class DriverControlled : BaseTemplate() {
 		GamepadButton(secondary, GamepadKeys.Button.DPAD_RIGHT)
 			.whileHeld(ExtendHang())
 			.whenReleased(StopHang())
+
+		GamepadButton(secondary, GamepadKeys.Button.A)
+			.whenPressed(ExtensionWithVision())
 
 		GamepadButton(primary, GamepadKeys.Button.LEFT_BUMPER)
 			.whenPressed(TwistIntakeRelatively((-20.0).deg))
@@ -114,9 +129,9 @@ class DriverControlled : BaseTemplate() {
 
 		if (extended) {
 			powers = Inputs(
-				x = 0.6 * powers.x.halfLinearHalfQuadratic,
-				y = 0.6 * powers.y.halfLinearHalfQuadratic,
-				omega = 0.6 * powers.omega.halfLinearHalfQuadratic
+				x = 0.6 * 0.5 * powers.x.halfLinearHalfQuadratic,
+				y = 0.6 * 0.5 * powers.y.halfLinearHalfQuadratic,
+				omega = 0.6 * 0.5 * powers.omega.halfLinearHalfQuadratic
 			)
 
 			if (gamepad1.left_trigger > 0.2) {
@@ -136,8 +151,8 @@ class DriverControlled : BaseTemplate() {
 //		)
 
 		Robot.follower.setTeleOpMovementVectors(
-			powers.y * 0.5,
-			powers.x * 0.5,
+			powers.y,
+			powers.x,
 			powers.omega * 0.5   ,
 			false
 		)
@@ -146,6 +161,7 @@ class DriverControlled : BaseTemplate() {
 		telemetry.addData("x", pose.x)
 		telemetry.addData("y", pose.y)
 		telemetry.addData("mode", mode)
+		telemetry.addData("distance", Robot.Subsystems.vision.distance)
 	}
 
 	fun switchModeTo(mode: Mode) {

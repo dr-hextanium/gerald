@@ -17,7 +17,7 @@ object Positions {
 
             val TRANSFER_INTERMEDIATE_PITCH = 90.deg
 
-            val TRANSFER_SAMPLE_PITCH = 220.deg
+            val TRANSFER_SAMPLE_PITCH = 225.deg
         }
 
         object Arm {
@@ -53,11 +53,11 @@ object Positions {
             val SCORE_SPECIMEN = 300.deg// 335.deg
 
             val SCORE_SAMPLE = 190.deg
-            val TRANSFER_SAMPLE = 290.deg
+            val TRANSFER_SAMPLE = 305.deg
         }
 
         object Claw {
-            val OPEN = 2.5 // degrees
+            val OPEN = 2.75 // degrees
             val CLOSED =  0.15 // degrees
             val CLOSED_SAMPLE = 1.65 // degrees
         }

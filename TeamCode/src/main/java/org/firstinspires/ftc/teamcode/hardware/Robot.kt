@@ -5,11 +5,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.pedropathing.follower.Follower
-import com.pedropathing.localization.Encoder
-import com.pedropathing.util.Constants
+import com.qualcomm.hardware.limelightvision.Limelight3A
 import com.qualcomm.hardware.lynx.LynxModule
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
@@ -21,7 +18,6 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.hardware.drive.CachingMecanumDrive
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
@@ -31,9 +27,8 @@ import org.firstinspires.ftc.teamcode.hardware.subsystem.Hang
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
-import org.firstinspires.ftc.teamcode.hardware.subsystem.OTOS
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Turret
-import org.firstinspires.ftc.teamcode.hardware.wrapper.SparkFunOTOSCorrected
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Vision
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 import org.firstinspires.ftc.teamcode.pedro.constants.FConstants
 import org.firstinspires.ftc.teamcode.pedro.constants.LConstants
@@ -73,8 +68,9 @@ object Robot : ISubsystem {
 		lateinit var intake: Intake
 		lateinit var deposit: Deposit
 		lateinit var hang: Hang
+		lateinit var vision: Vision
 
-		fun all() = listOf(lift, intake, hang, deposit, extension)
+		fun all() = listOf(lift, intake, hang, deposit, extension, vision)
 	}
 
 	object Motors {
@@ -148,6 +144,9 @@ object Robot : ISubsystem {
 	fun init(hw: HardwareMap, telemetry: Telemetry, gamepad1: Gamepad, gamepad2: Gamepad) {
 		Robot.telemetry = MultipleTelemetry(FtcDashboard.getInstance().telemetry, telemetry)
 		Robot.hw = hw
+
+		Robot.telemetry.msTransmissionInterval = 11
+
 
 		hubs = hw.getAll(LynxModule::class.java)
 		hubs.forEach { it.bulkCachingMode = LynxModule.BulkCachingMode.MANUAL }
@@ -255,6 +254,9 @@ object Robot : ISubsystem {
 
 		follower = Follower(hw, FConstants::class.java, LConstants::class.java)
 
+		val limelight = hw["limelight"] as Limelight3A
+
+		Subsystems.vision = Vision(limelight)
 		Subsystems.lift = Lift(Motors.Lift.left, Motors.Lift.right)
 		Subsystems.extension = Extension(Motors.Extension.motor, Motors.Extension.encoder)
 

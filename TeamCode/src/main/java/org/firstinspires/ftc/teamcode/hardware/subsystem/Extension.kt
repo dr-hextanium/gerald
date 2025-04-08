@@ -36,7 +36,7 @@ class Extension(
 	}
 
 	override fun read() {
-		position = (encoder.currentPosition) * inchesPerTick
+		position = -(encoder.currentPosition) * inchesPerTick
 	}
 
 	override fun update() {
