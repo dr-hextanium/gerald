@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.hardware.subsystem
+package org.firstinspires.ftc.teamcode.hardware.subsystem.miscellaneous
 
 import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
+import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 
 class Hang(
 	val left1: CachingCRServo,

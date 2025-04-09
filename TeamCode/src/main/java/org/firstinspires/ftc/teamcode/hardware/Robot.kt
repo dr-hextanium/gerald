@@ -5,11 +5,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.CommandScheduler
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.pedropathing.follower.Follower
-import com.pedropathing.localization.Encoder
-import com.pedropathing.util.Constants
 import com.qualcomm.hardware.lynx.LynxModule
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import com.qualcomm.robotcore.hardware.CRServo
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
@@ -21,19 +17,16 @@ import com.qualcomm.robotcore.util.ElapsedTime
 import dev.frozenmilk.dairy.cachinghardware.CachingCRServo
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.Telemetry
-import org.firstinspires.ftc.teamcode.hardware.drive.CachingMecanumDrive
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
 import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Deposit
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Diffy
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Extension
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Hang
+import org.firstinspires.ftc.teamcode.hardware.subsystem.deposit.Deposit
+import org.firstinspires.ftc.teamcode.hardware.subsystem.intake.Diffy
+import org.firstinspires.ftc.teamcode.hardware.subsystem.intake.Extension
+import org.firstinspires.ftc.teamcode.hardware.subsystem.miscellaneous.Hang
 import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Intake
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Lift
-import org.firstinspires.ftc.teamcode.hardware.subsystem.OTOS
-import org.firstinspires.ftc.teamcode.hardware.subsystem.Turret
-import org.firstinspires.ftc.teamcode.hardware.wrapper.SparkFunOTOSCorrected
+import org.firstinspires.ftc.teamcode.hardware.subsystem.intake.Intake
+import org.firstinspires.ftc.teamcode.hardware.subsystem.deposit.Lift
+import org.firstinspires.ftc.teamcode.hardware.subsystem.intake.Turret
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 import org.firstinspires.ftc.teamcode.pedro.constants.FConstants
 import org.firstinspires.ftc.teamcode.pedro.constants.LConstants
@@ -300,5 +293,13 @@ object Robot : ISubsystem {
 
 	override fun write() {
 		Subsystems.all().forEach { it.write() }
+	}
+
+	object Constants {
+		const val WIDTH = 12.0 // inches
+		const val LENGTH = 12.5 // inches
+
+		const val SEMI_WIDTH = WIDTH / 2.0 // inches
+		const val SEMI_LENGTH = LENGTH / 2.0 // inches
 	}
 }

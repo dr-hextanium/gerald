@@ -1,12 +1,15 @@
-package org.firstinspires.ftc.teamcode.hardware.subsystem
+package org.firstinspires.ftc.teamcode.hardware.subsystem.deposit
 
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Arm
+import org.firstinspires.ftc.teamcode.hardware.subsystem.Claw
+import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
-import org.firstinspires.ftc.teamcode.utility.functions.deg
 import kotlin.math.acos
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw, val extension: UsefulServo) : ISubsystem {
+class Deposit(val pivot: UsefulServo, val arm: Arm, val claw: Claw, val extension: UsefulServo) :
+    ISubsystem {
 	val all = listOf(arm, claw)
 
 	override fun reset() = all.forEach { it.reset() }
