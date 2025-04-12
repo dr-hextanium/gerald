@@ -1,11 +1,10 @@
-package org.firstinspires.ftc.teamcode.hardware.subsystem
+package org.firstinspires.ftc.teamcode.hardware.subsystem.miscellaneous
 
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS
 import com.qualcomm.hardware.sparkfun.SparkFunOTOS.Pose2D
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
+import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.wrapper.SparkFunOTOSCorrected
-import kotlin.math.PI
 
 class OTOS(val sensor: SparkFunOTOSCorrected) : ISubsystem {
     val calibrationProgress: Int

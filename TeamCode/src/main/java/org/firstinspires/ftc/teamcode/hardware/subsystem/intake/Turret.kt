@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.hardware.subsystem
+package org.firstinspires.ftc.teamcode.hardware.subsystem.intake
 
+import org.firstinspires.ftc.teamcode.hardware.subsystem.ISubsystem
 import org.firstinspires.ftc.teamcode.hardware.wrapper.useful.UsefulServo
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
