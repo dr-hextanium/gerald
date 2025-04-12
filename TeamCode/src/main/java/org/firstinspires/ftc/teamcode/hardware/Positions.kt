@@ -6,7 +6,7 @@ object Positions {
     object Intake {
         object Claw {
             val OPEN = 5.0 // degrees
-            val CLOSED = 6.0 // degrees
+            val CLOSED = 6.0 //5.94 // degrees
 
             val INTERMEDIATE_PITCH = 325.deg
             val INTAKE_PITCH = 300.deg
@@ -15,9 +15,13 @@ object Positions {
             val ASIDE_TWIST = (-45).deg
             val TUCK_PITCH = 355.0.deg
 
+//            val TRANSFER_INTERMEDIATE_PITCH = 90.deg
+//
+//            val TRANSFER_SAMPLE_PITCH = 300.deg
+
             val TRANSFER_INTERMEDIATE_PITCH = 90.deg
 
-            val TRANSFER_SAMPLE_PITCH = 225.deg
+            val TRANSFER_SAMPLE_PITCH = 220.deg
         }
 
         object Arm {
@@ -27,6 +31,9 @@ object Positions {
             val ASIDE = 75.deg
             val TUCK = 115.deg
 
+            //            val TRANSFER_SAMPLE = 155.deg
+//            val TRANSFER_INTERMEDIATE = 40.deg
+//            val TRANSFER_INTERMEDIATE_SQUARED = ((TRANSFER_SAMPLE + TRANSFER_INTERMEDIATE) / 2.0) + 10.deg
             val TRANSFER_SAMPLE = 140.deg
             val TRANSFER_INTERMEDIATE = 40.deg
             val TRANSFER_INTERMEDIATE_SQUARED = ((TRANSFER_SAMPLE + TRANSFER_INTERMEDIATE) / 2.0) + 10.deg
@@ -42,18 +49,25 @@ object Positions {
     object Deposit {
         object Arm {
             val GRAB_SPECIMEN = 355.deg
-            val SCORE_SPECIMEN = 10.deg
+            val SCORE_SPECIMEN = 0.deg
 
-            val TRANSFER_SAMPLE = 45.deg
-            val SCORE_SAMPLE = 150.deg
+//            val TRANSFER_INTERMEDIATE = 70.deg
+//            val TRANSFER_SAMPLE = 20.deg
+//            val SCORE_SAMPLE = 135.deg
+
+            val TRANSFER_SAMPLE = 20.deg//45.deg
+            val SCORE_SAMPLE = 120.deg//150.deg
         }
 
         object Pivot {
             val GRAB_SPECIMEN = 355.deg
-            val SCORE_SPECIMEN = 300.deg// 335.deg
+            val SCORE_SPECIMEN = 340.deg// 335.deg
+
+//            val SCORE_SAMPLE = 170.deg
+//            val TRANSFER_SAMPLE = 355.deg
 
             val SCORE_SAMPLE = 190.deg
-            val TRANSFER_SAMPLE = 305.deg
+            val TRANSFER_SAMPLE = 290.deg//290.deg
         }
 
         object Claw {
@@ -65,12 +79,13 @@ object Positions {
         object Extension {
             val RETRACTED = 180.deg
             val EXTENDED = 90.deg
+            val TRANSFER_EXTENSION = 114.deg
         }
     }
 
     object Lift {
-        const val GRAB_SPECIMEN = 1.5 // 2.0 inches
-        const val HIGH_CHAMBER = 16.0 // inches //16.0 inches
+        const val GRAB_SPECIMEN = 0.7 // 2.0 inches
+        const val HIGH_CHAMBER = 16.5 // inches //16.0 inches
         const val HIGH_BASKET = 22.0 // inches, TODO
     }
 

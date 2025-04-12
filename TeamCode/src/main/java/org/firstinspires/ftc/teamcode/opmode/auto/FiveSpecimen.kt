@@ -2,129 +2,154 @@ package org.firstinspires.ftc.teamcode.opmode.auto
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import com.arcrobotics.ftclib.command.WaitCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.command.auto.PedroPathCommand
+import org.firstinspires.ftc.teamcode.command.deposit.CloseDeposit
+import org.firstinspires.ftc.teamcode.command.extension.ExtensionToUntil
 import org.firstinspires.ftc.teamcode.command.sequences.specimen.PrepScoringSpecimen
 import org.firstinspires.ftc.teamcode.command.sequences.specimen.ScoreSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.AutoTemplate
-import org.firstinspires.ftc.teamcode.paths.FiveSpecimenPaths
+import org.firstinspires.ftc.teamcode.paths.FiveSpecimenV2Paths
 
-@Autonomous(name = "5 Specimen")
-class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
-	val paths by lazy { FiveSpecimenPaths() }
+@Autonomous(name = "5 Specimen V2")
+class FiveSpecimenV2 : AutoTemplate(FiveSpecimenV2Paths.startPose) {
+	val paths = FiveSpecimenV2Paths
 
 	val preload by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.preload, follower, maxPower = 0.7, holdEnd = true)
+		PedroPathCommand(
+			paths.preload, follower, maxPower = 0.8, holdEnd = true
 		)
 	}
-
-	val firstPush by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.firstPush, follower, maxPower = 1.0, holdEnd = true)
+	val pushFirst by lazy {
+		PedroPathCommand(
+			paths.pushFirst, follower, maxPower = 1.0, holdEnd = false
 		)
 	}
-
-	val secondPush by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.secondPush, follower, maxPower = 1.0, holdEnd = true)
+	val pushSecond by lazy {
+		PedroPathCommand(
+			paths.pushSecond, follower, maxPower = 1.0, holdEnd = false
 		)
 	}
-
-	val thirdPush by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.thirdPush, follower, maxPower = 1.0, holdEnd = true)
+	val pushThird by lazy {
+		PedroPathCommand(
+			paths.pushThird, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
 
 	val grabSecond by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.grabSecond, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.grabSecond, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
 	val scoreSecond by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.scoreSecond, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.scoreSecond, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
+	val goInFrontForThird by lazy {
+		PedroPathCommand(
+			paths.goInFrontForThird, follower, maxPower = 1.0, holdEnd = true
+		)
+	}
 	val grabThird by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.grabThird, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.grabThird, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
 	val scoreThird by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.scoreThird, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.scoreThird, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
+	val goInFrontForFourth by lazy {
+		PedroPathCommand(
+			paths.goInFrontForFourth, follower, maxPower = 1.0, holdEnd = true
+		)
+	}
 	val grabFourth by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.grabFourth, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.grabFourth, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
 	val scoreFourth by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.scoreFourth, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.scoreFourth, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
+	val goInFrontForFifth by lazy {
+		PedroPathCommand(
+			paths.goInFrontForFifth, follower, maxPower = 1.0, holdEnd = true
+		)
+	}
 	val grabFifth by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.grabFifth, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.grabFifth, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-
 	val scoreFifth by lazy {
-		SequentialCommandGroup(
-			PedroPathCommand(paths.scoreFifth, follower, maxPower = 1.0, holdEnd = true)
+		PedroPathCommand(
+			paths.scoreFifth, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
 
 	override fun start() {
 		super.start()
 
+//		Robot.scheduler.schedule(
+//			PrepScoringSpecimen()
+//		)
+
 		Robot.scheduler.schedule(
 			SequentialCommandGroup(
+				// score preload
 				ParallelCommandGroup(
 					preload,
-					SequentialCommandGroup(
-						WaitCommand(250),
-						PrepScoringSpecimen()
-					)
+					PrepScoringSpecimen()
 				),
 
-				ScoreSpecimen(),
+				// push the specimens
+				pushFirst,
+				pushSecond,
+				pushThird,
 
-				firstPush,
-				secondPush,
-				thirdPush,
-
+				// grab second
 				grabSecond,
-				PrepScoringSpecimen(),
-				scoreSecond,
+				CloseDeposit(),
+				ParallelCommandGroup(
+					scoreSecond,
+					PrepScoringSpecimen(),
+				),
 				ScoreSpecimen(),
 
+				goInFrontForThird,
 				grabThird,
-				PrepScoringSpecimen(),
-				scoreThird,
+				CloseDeposit(),
+				ParallelCommandGroup(
+					scoreThird,
+					PrepScoringSpecimen(),
+				),
 				ScoreSpecimen(),
 
+				goInFrontForFourth,
 				grabFourth,
-				PrepScoringSpecimen(),
-				scoreFourth,
+				CloseDeposit(),
+				ParallelCommandGroup(
+					scoreFourth,
+					PrepScoringSpecimen(),
+				),
 				ScoreSpecimen(),
 
+				goInFrontForFifth,
 				grabFifth,
-				PrepScoringSpecimen(),
-				scoreFifth,
+				CloseDeposit(),
+				ParallelCommandGroup(
+					scoreFifth,
+					PrepScoringSpecimen(),
+				),
 				ScoreSpecimen(),
+			).alongWith(
+				ExtensionToUntil(-0.5, 0.0, 500),
 			)
 		)
 	}

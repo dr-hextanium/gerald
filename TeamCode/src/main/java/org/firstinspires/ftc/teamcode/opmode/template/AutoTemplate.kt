@@ -28,6 +28,12 @@ open class AutoTemplate(val start: Pose) : BaseTemplate() {
 	val follower
 		get() = Robot.follower
 
+	override fun init() {
+		Globals.AUTO = true
+
+		super.init()
+	}
+
 	override fun initialize() {
 		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
 			.whenPressed(ToggleIntake())
@@ -56,8 +62,6 @@ open class AutoTemplate(val start: Pose) : BaseTemplate() {
 			OpenDeposit(),
 			ExtendDeposit(),
 		)
-
-		Globals.AUTO = true
 
 		Constants.setConstants(FConstants::class.java, LConstants::class.java)
 		follower.setStartingPose(start)

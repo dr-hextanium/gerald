@@ -12,6 +12,29 @@ import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
 import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
 import org.firstinspires.ftc.teamcode.hardware.Positions
 
+//class Transfer : SequentialCommandGroup(
+//	PrepTransfer(),
+//	WaitCommand(200),
+//	CloseDeposit(),
+//	OpenIntake(),
+//	ExtensionToUntil(0.0, time = 500),
+//	ParallelCommandGroup(
+//		LiftToUntil(Positions.Lift.HIGH_BASKET, time = 750, tolerance = 0.5),
+//		SequentialCommandGroup(
+//			WaitCommand(400),
+//			ParallelCommandGroup(
+//				SwingDeposit(Positions.Deposit.Arm.SCORE_SAMPLE),
+//				PivotDeposit(Positions.Deposit.Pivot.SCORE_SAMPLE),
+//				SequentialCommandGroup(
+//					WaitCommand(100),
+//					ExtendDeposit()
+//				)
+//			),
+//		)
+//	),
+//)
+
+
 class Transfer : SequentialCommandGroup(
 	PrepTransfer(),
 	WaitCommand(200),

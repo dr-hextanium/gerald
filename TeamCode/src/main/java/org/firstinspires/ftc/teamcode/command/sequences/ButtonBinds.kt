@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.command.sequences
 
 import com.arcrobotics.ftclib.command.ConditionalCommand
+import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
+import com.pedropathing.localization.Pose
+import com.pedropathing.pathgen.Point
 import org.firstinspires.ftc.teamcode.command.sequences.sample.Transfer
 import org.firstinspires.ftc.teamcode.command.sequences.sample.ScoreSample
 import org.firstinspires.ftc.teamcode.command.sequences.sample.BringToTransfer
@@ -26,7 +29,7 @@ class SecondarySquareBind : ConditionalCommand(
 
 class PrimaryCrossBind : ConditionalCommand(
 	ScoreSpecimen(),
-	PrepScoringSpecimen(),
+	PrepScoringSpecimen().alongWith(InstantCommand({ Robot.follower.pose = Pose(6.500, 36.000, Robot.follower.pose.heading) })),
 	{ Robot.Subsystems.deposit.arm.angle == Deposit.Arm.SCORE_SPECIMEN }
 )
 
@@ -39,6 +42,6 @@ class SecondaryCrossBind : ConditionalCommand(
 		Transfer(),
 		{ Robot.Subsystems.extension.target >= 0.0 }
 	),
-	ScoreSample(),
+	ScoreSample().alongWith(InstantCommand({ Robot.follower.pose = Pose(11.750, 131.00, Robot.follower.pose.heading) })),
 	{ Robot.Subsystems.deposit.arm.angle == Deposit.Arm.TRANSFER_SAMPLE }
 )

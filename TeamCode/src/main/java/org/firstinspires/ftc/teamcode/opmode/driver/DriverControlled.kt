@@ -5,17 +5,18 @@ import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.button.GamepadButton
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.pedropathing.localization.Pose
+import com.pedropathing.util.CustomPIDFCoefficients
+import com.pedropathing.util.PIDFController
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import org.firstinspires.ftc.teamcode.command.auto.DriveToGrabSample
+import org.firstinspires.ftc.teamcode.command.auto.DriveToGrabSpecimen
 import org.firstinspires.ftc.teamcode.command.deposit.ToggleDeposit
-import org.firstinspires.ftc.teamcode.command.extension.ExtensionTo
-import org.firstinspires.ftc.teamcode.command.extension.ExtensionToUntil
 import org.firstinspires.ftc.teamcode.command.extension.ExtensionWithVision
 import org.firstinspires.ftc.teamcode.command.hang.ExtendHang
 import org.firstinspires.ftc.teamcode.command.hang.RetractHang
 import org.firstinspires.ftc.teamcode.command.hang.StopHang
 import org.firstinspires.ftc.teamcode.command.intake.ToggleIntake
 import org.firstinspires.ftc.teamcode.command.intake.TwistIntakeRelatively
-import org.firstinspires.ftc.teamcode.command.lift.NudgeLift
 import org.firstinspires.ftc.teamcode.command.sequences.IntakeSample
 import org.firstinspires.ftc.teamcode.command.sequences.PrimaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.PrimarySquareBind
@@ -23,10 +24,15 @@ import org.firstinspires.ftc.teamcode.command.sequences.SecondaryCrossBind
 import org.firstinspires.ftc.teamcode.command.sequences.SecondarySquareBind
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
+import org.firstinspires.ftc.teamcode.hardware.wrapper.GamepadTrigger
 import org.firstinspires.ftc.teamcode.opmode.template.BaseTemplate
+import org.firstinspires.ftc.teamcode.pedro.constants.FConstants
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 import org.firstinspires.ftc.teamcode.utility.functions.halfLinearHalfQuadratic
 import org.firstinspires.ftc.teamcode.utility.functions.rad
+import kotlin.math.IEEErem
+import kotlin.math.abs
+
 
 @TeleOp
 class DriverControlled : BaseTemplate() {
@@ -38,14 +44,6 @@ class DriverControlled : BaseTemplate() {
 		Globals.AUTO = false
 
 		GamepadButton(primary, SQUARE)
-			.whenPressed(
-				ConditionalCommand(
-					PrimarySquareBind(),
-					SecondarySquareBind()
-				) { mode == Mode.SPECIMEN }
-			)
-
-		GamepadButton(primary, CIRCLE)
 			.whenPressed(
 				ConditionalCommand(
 					PrimarySquareBind(),
@@ -66,6 +64,9 @@ class DriverControlled : BaseTemplate() {
 
 		GamepadButton(primary, GamepadKeys.Button.LEFT_STICK_BUTTON)
 			.whenPressed(InstantCommand({ Robot.follower.pose = Pose(Robot.pose.x, Robot.pose.y, 0.0) }))
+
+		GamepadButton(primary, GamepadKeys.Button.RIGHT_STICK_BUTTON)
+			.whenPressed(InstantCommand({ Globals.HEADING_LOCK = !Globals.HEADING_LOCK }))
 
 		GamepadButton(primary, GamepadKeys.Button.DPAD_UP)
 			.whenPressed(ToggleIntake())
@@ -90,11 +91,16 @@ class DriverControlled : BaseTemplate() {
 		GamepadButton(primary, GamepadKeys.Button.RIGHT_BUMPER)
 			.whenPressed(TwistIntakeRelatively(20.0.deg))
 
-		GamepadButton(primary, GamepadKeys.Button.BACK)
-			.whenPressed(NudgeLift(-5.0))
+		GamepadTrigger(primary, 0.6, GamepadKeys.Trigger.LEFT_TRIGGER)
+			.whenActive(
+				ConditionalCommand(
+					DriveToGrabSpecimen(),
+					DriveToGrabSample(),
+				) { mode == Mode.SPECIMEN }
+			)
 
 		GamepadButton(primary, GamepadKeys.Button.START)
-			.whenPressed(NudgeLift(5.0))
+			.whenPressed(InstantCommand({ Robot.follower.breakFollowing() }))
 
 		GamepadButton(primary, CIRCLE)
 			.whenPressed(
@@ -133,38 +139,57 @@ class DriverControlled : BaseTemplate() {
 				y = 0.6 * 0.5 * powers.y.halfLinearHalfQuadratic,
 				omega = 0.6 * 0.5 * powers.omega.halfLinearHalfQuadratic
 			)
+		}
 
-			if (gamepad1.left_trigger > 0.2) {
-				powers = Inputs(
-					x = 1.3 * powers.x,
-					y = 1.3 * powers.y,
-					omega = 1.1 * powers.omega,
-				)
+		if (input.x != 0.0 || input.y != 0.0 || input.omega != 0.0) {
+			if (Globals.TELEOP_AUTO) {
+				Robot.follower.startTeleopDrive()
+				Globals.TELEOP_AUTO = false
 			}
 		}
 
-//		Robot.follower.setTeleOpMovementVectors(
-//			powers.y,
-//			powers.x * 1.1,
-//			powers.omega * 0.5,
-//			false
-//		)
+		if (!Globals.TELEOP_AUTO) {
+			if (Globals.HEADING_LOCK) {
+				val targetHeading = 0.deg
 
-		Robot.follower.setTeleOpMovementVectors(
-			powers.y,
-			powers.x,
-			powers.omega * 0.5   ,
-			false
-		)
+				val headingError: Double = (targetHeading - pose.heading).IEEErem(2.0 * Math.PI)
+
+				val headingController = PIDFController(CustomPIDFCoefficients(0.01, 0.0, 0.0, 0.0))
+
+				val headingCorrection = if (abs(headingError) < Math.toRadians(2.0)) {
+					0.0
+				} else {
+					headingController.updatePosition(pose.heading)
+					headingController.updateError(headingError)
+					headingController.runPIDF()
+				}
+
+				Robot.follower.setTeleOpMovementVectors(
+					powers.y,
+					powers.x,
+					headingCorrection,
+					false
+				)
+			} else {
+				Robot.follower.setTeleOpMovementVectors(
+					powers.y,
+					powers.x,
+					powers.omega * 0.6,
+					false
+				)
+			}
+		}
 
 		telemetry.addData("heading", pose.heading.rad)
 		telemetry.addData("x", pose.x)
 		telemetry.addData("y", pose.y)
 		telemetry.addData("mode", mode)
-		telemetry.addData("distance", Robot.Subsystems.vision.distance)
+		telemetry.addData("teleop auto", Globals.TELEOP_AUTO)
+		telemetry.addData("heading lock", Globals.HEADING_LOCK)
+//		telemetry.addData("teleop auto", Globals.TELEOP_AUTO)
 	}
 
-	fun switchModeTo(mode: Mode) {
+	private fun switchModeTo(mode: Mode) {
 		gamepad1.rumbleBlips(1)
 		this.mode = mode
 	}

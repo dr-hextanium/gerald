@@ -52,16 +52,16 @@ class RobotRigger : BaseTemplate() {
         var intakeArmAngle = 48.0
 
         @JvmField
-        var turretAngle = 79
+        var turretAngle = 115
 
         @JvmField
         var depositArmAngle = 355.0
 
         @JvmField
-        var depositPivotAngle = 7.0
+        var depositPivotAngle = 335.0
 
         @JvmField
-        var extensionAngle = 0.0
+        var extensionAngle = 110.0
 
         @JvmField
         var intakeClawTwist = 0.0

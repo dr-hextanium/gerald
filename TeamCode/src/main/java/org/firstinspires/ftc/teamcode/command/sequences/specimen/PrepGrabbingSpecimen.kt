@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.hardware.Positions.Intake.Turret.ASIDE
 
 class PrepGrabbingSpecimen(intake: Boolean = true, shouldExtend: Boolean = true) : SequentialCommandGroup(
 	PivotDeposit(Deposit.Pivot.GRAB_SPECIMEN),
-	WaitCommand(100),
+	WaitCommand(50),
 	RetractDeposit(),
 	SwingDeposit(Deposit.Arm.GRAB_SPECIMEN),
 	LiftToUntil(Positions.Lift.GRAB_SPECIMEN, time = 250),

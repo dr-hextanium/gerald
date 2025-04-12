@@ -23,6 +23,8 @@ class Extension(
 		get() = target > 1.0
 
 	override fun reset() {
+		encoder.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+		encoder.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 		motor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
 		motor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 		motor.power = 0.0

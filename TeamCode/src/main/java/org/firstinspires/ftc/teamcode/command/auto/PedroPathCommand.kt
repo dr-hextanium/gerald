@@ -3,11 +3,10 @@ package org.firstinspires.ftc.teamcode.command.auto
 import com.pedropathing.follower.Follower
 import com.pedropathing.follower.FollowerConstants
 import com.pedropathing.pathgen.PathChain
-import com.pedropathing.util.CustomFilteredPIDFCoefficients
 import com.qualcomm.robotcore.util.ElapsedTime
 import org.firstinspires.ftc.teamcode.command.CommandTemplate
 
-class PedroPathCommand(
+open class PedroPathCommand(
 	val path: PathChain,
 	val follower: Follower,
 	val maxPower: Double = 1.0,

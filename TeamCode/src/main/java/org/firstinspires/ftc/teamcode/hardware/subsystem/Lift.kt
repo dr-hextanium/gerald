@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import dev.frozenmilk.dairy.cachinghardware.CachingDcMotorEx
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
+import org.firstinspires.ftc.teamcode.hardware.Globals
+import org.firstinspires.ftc.teamcode.utility.controller.PIDFController
 import org.firstinspires.ftc.teamcode.utility.controller.VCPIDFController
 import kotlin.math.abs
 import kotlin.math.sign
@@ -14,8 +16,16 @@ class Lift(
     val left: CachingDcMotorEx,
     val right: CachingDcMotorEx
 ) : ISubsystem {
-    val controller = VCPIDFController(kP, kI, kD, kF, 13.0)
+    val controller: PIDFController
     val motors = listOf(left, right)
+
+    init {
+    	controller = if (Globals.AUTO) {
+            VCPIDFController(Auto.kP, Auto.kI, Auto.kD, Auto.kF, 13.0)
+        } else {
+            VCPIDFController(kP, kI, kD, kF, 13.0)
+        }
+    }
 
     var position = 0.0
     var target = 0.0
@@ -62,6 +72,14 @@ class Lift(
     fun within(tolerance: Double) = abs(target - position) <= tolerance
 
     companion object {
+        object Auto {
+            var kP = 0.01
+            var kI = 0.00
+            var kD = 0.000
+            var kF = 0.05
+            var alpha = 0.8
+        }
+
         @JvmField
         var kP = 0.1 //0.08
         @JvmField
