@@ -11,11 +11,11 @@ import org.firstinspires.ftc.teamcode.command.sequences.specimen.PrepScoringSpec
 import org.firstinspires.ftc.teamcode.command.sequences.specimen.ScoreSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.opmode.template.AutoTemplate
-import org.firstinspires.ftc.teamcode.paths.FiveSpecimenPaths
+import org.firstinspires.ftc.teamcode.paths.FivePlusOnePaths
 
-@Autonomous(name = "5 Specimen")
-class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
-	val paths = FiveSpecimenPaths
+@Autonomous(name = "5 Specimen 1 Sample")
+class FivePlusOne : AutoTemplate(FivePlusOnePaths.startPose) {
+	val paths = FivePlusOnePaths
 
 	val preload by lazy {
 		PedroPathCommand(
@@ -38,21 +38,12 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 		)
 	}
 
-	val grabSecond by lazy {
-		PedroPathCommand(
-			paths.grabSecond, follower, maxPower = 1.0, holdEnd = true
-		)
-	}
 	val scoreSecond by lazy {
 		PedroPathCommand(
 			paths.scoreSecond, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-	val goInFrontForThird by lazy {
-		PedroPathCommand(
-			paths.goInFrontForThird, follower, maxPower = 1.0, holdEnd = true
-		)
-	}
+
 	val grabThird by lazy {
 		PedroPathCommand(
 			paths.grabThird, follower, maxPower = 1.0, holdEnd = true
@@ -63,11 +54,7 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 			paths.scoreThird, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-	val goInFrontForFourth by lazy {
-		PedroPathCommand(
-			paths.goInFrontForFourth, follower, maxPower = 1.0, holdEnd = true
-		)
-	}
+
 	val grabFourth by lazy {
 		PedroPathCommand(
 			paths.grabFourth, follower, maxPower = 1.0, holdEnd = true
@@ -78,11 +65,7 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 			paths.scoreFourth, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
-	val goInFrontForFifth by lazy {
-		PedroPathCommand(
-			paths.goInFrontForFifth, follower, maxPower = 1.0, holdEnd = true
-		)
-	}
+
 	val grabFifth by lazy {
 		PedroPathCommand(
 			paths.grabFifth, follower, maxPower = 1.0, holdEnd = true
@@ -91,6 +74,16 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 	val scoreFifth by lazy {
 		PedroPathCommand(
 			paths.scoreFifth, follower, maxPower = 1.0, holdEnd = true
+		)
+	}
+	val driveToPickup by lazy {
+		PedroPathCommand(
+			paths.driveToPickup, follower, maxPower = 1.0, holdEnd = true
+		)
+	}
+	val scoreSample by lazy {
+		PedroPathCommand(
+			paths.scoreSample, follower, maxPower = 1.0, holdEnd = true
 		)
 	}
 
@@ -102,8 +95,9 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 				// score preload
 				ParallelCommandGroup(
 					SequentialCommandGroup(
-						WaitCommand(500),
+						WaitCommand(250),
 						preload,
+						ScoreSpecimen(),
 					),
 					PrepScoringSpecimen()
 				),
@@ -111,21 +105,17 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 				// push the specimens
 				pushFirst,
 				pushSecond,
-				pushThird,
 
-				// grab second
-				grabSecond,
-				WaitCommand(100),
+				pushThird,
 				CloseDeposit(),
+
 				ParallelCommandGroup(
 					scoreSecond,
 					PrepScoringSpecimen(),
 				),
 				ScoreSpecimen(),
 
-				goInFrontForThird,
 				grabThird,
-				WaitCommand(100),
 				CloseDeposit(),
 				ParallelCommandGroup(
 					scoreThird,
@@ -133,9 +123,7 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 				),
 				ScoreSpecimen(),
 
-				goInFrontForFourth,
 				grabFourth,
-				WaitCommand(100),
 				CloseDeposit(),
 				ParallelCommandGroup(
 					scoreFourth,
@@ -143,15 +131,16 @@ class FiveSpecimen : AutoTemplate(FiveSpecimenPaths.startPose) {
 				),
 				ScoreSpecimen(),
 
-				goInFrontForFifth,
 				grabFifth,
-				WaitCommand(100),
 				CloseDeposit(),
 				ParallelCommandGroup(
 					scoreFifth,
 					PrepScoringSpecimen(),
 				),
 				ScoreSpecimen(),
+
+				driveToPickup,
+				scoreSample
 			).alongWith(
 				ExtensionToUntil(-0.5, 0.0, 500),
 			)

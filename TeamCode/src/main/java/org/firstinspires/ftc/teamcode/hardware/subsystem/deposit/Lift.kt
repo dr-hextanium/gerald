@@ -53,7 +53,11 @@ class Lift(
     }
 
     override fun update() {
-        controller.updateCoefficients(kP, kI, kD, kF, alpha)
+        if (Globals.AUTO) {
+            controller.updateCoefficients(Auto.kP, Auto.kI, Auto.kD, Auto.kF, alpha)
+        } else {
+            controller.updateCoefficients(kP, kI, kD, kF, alpha)
+        }
 
         val output = controller.calculate(position, target)
 
@@ -73,7 +77,7 @@ class Lift(
 
     companion object {
         object Auto {
-            var kP = 0.01
+            var kP = 0.051
             var kI = 0.00
             var kD = 0.000
             var kF = 0.05

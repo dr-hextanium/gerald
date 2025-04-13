@@ -56,7 +56,7 @@ object Positions {
 //            val SCORE_SAMPLE = 135.deg
 
             val TRANSFER_SAMPLE = 20.deg//45.deg
-            val SCORE_SAMPLE = 120.deg//150.deg
+            val SCORE_SAMPLE = 110.deg//150.deg
         }
 
         object Pivot {
@@ -66,7 +66,7 @@ object Positions {
 //            val SCORE_SAMPLE = 170.deg
 //            val TRANSFER_SAMPLE = 355.deg
 
-            val SCORE_SAMPLE = 190.deg
+            val SCORE_SAMPLE = 140.deg
             val TRANSFER_SAMPLE = 290.deg//290.deg
         }
 
@@ -86,7 +86,7 @@ object Positions {
     object Lift {
         const val GRAB_SPECIMEN = 0.7 // 2.0 inches
         const val HIGH_CHAMBER = 16.5 // inches //16.0 inches
-        const val HIGH_BASKET = 22.0 // inches, TODO
+        const val HIGH_BASKET = 20.0 // inches, TODO
     }
 
     object Extension {

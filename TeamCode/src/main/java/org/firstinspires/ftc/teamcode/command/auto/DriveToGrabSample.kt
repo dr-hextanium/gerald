@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode.command.auto
 
 import com.arcrobotics.ftclib.command.InstantCommand
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
-import com.pedropathing.pathgen.BezierLine
+import com.pedropathing.pathgen.BezierCurve
 import com.pedropathing.pathgen.PathBuilder
 import com.pedropathing.pathgen.Point
 import org.firstinspires.ftc.teamcode.hardware.Globals
 import org.firstinspires.ftc.teamcode.hardware.Robot
-import org.firstinspires.ftc.teamcode.utility.functions.deg
 
 class DriveToGrabSample : SequentialCommandGroup(
 	InstantCommand({ Globals.TELEOP_AUTO = true }),
@@ -15,28 +14,22 @@ class DriveToGrabSample : SequentialCommandGroup(
 	PedroPathCommand(
 		PathBuilder()
 			.addPath(
-				BezierLine(
+				BezierCurve(
 					Robot.follower.pose.let { Point(it.x, it.y, Point.CARTESIAN) },
-					Point(30.0, 120.0, Point.CARTESIAN)
+					Point(Robot.follower.pose.x, 112.000, Point.CARTESIAN),
+					Point(48.000, 96.000, Point.CARTESIAN),
+					Point(13.500, 130.000, Point.CARTESIAN)
 				)
 			)
-			.setZeroPowerAccelerationMultiplier(3.0)
+			.setZeroPowerAccelerationMultiplier(6.0)
 			.setPathEndTimeoutConstraint(0.0)
-			.setConstantHeadingInterpolation((-45).deg)
-			.addPath(
-				BezierLine(
-					Point(30.0, 120.0, Point.CARTESIAN),
-					Point(11.750, 131.00, Point.CARTESIAN)
-				)
-			)
-			.setZeroPowerAccelerationMultiplier(3.0)
-			.setPathEndTimeoutConstraint(0.0)
-			.setConstantHeadingInterpolation((-45).deg)
+			.setTangentHeadingInterpolation()
+			.setReversed(true)
 			.build(),
 
 		Robot.follower,
 
-		maxPower = 0.8
+		maxPower = 1.0
 	),
 
 	InstantCommand({ Globals.TELEOP_AUTO = false }),

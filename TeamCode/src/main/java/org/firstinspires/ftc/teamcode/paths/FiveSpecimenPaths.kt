@@ -10,7 +10,9 @@ import org.firstinspires.ftc.teamcode.command.sequences.specimen.ScoreSpecimen
 import org.firstinspires.ftc.teamcode.hardware.Robot
 import org.firstinspires.ftc.teamcode.utility.functions.deg
 
-object FiveSpecimenV2Paths {
+object FiveSpecimenPaths {
+	val grabX = 6.75
+
 	val preload: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
@@ -78,9 +80,10 @@ object FiveSpecimenV2Paths {
 			BezierCurve(
 				Point(18.000, 7.000, Point.CARTESIAN),
 				Point(17.500, 20.000, Point.CARTESIAN),
-				Point(6.500, 22.500, Point.CARTESIAN)
+				Point(grabX, 22.500, Point.CARTESIAN)
 			)
 		)
+		.setZeroPowerAccelerationMultiplier(2.0)
 		.setPathEndTimeoutConstraint(0.0)
 		.setPathEndTValueConstraint(0.97)
 		.setConstantHeadingInterpolation(0.deg)
@@ -89,7 +92,7 @@ object FiveSpecimenV2Paths {
 	val scoreSecond: PathChain = PathBuilder()
 		.addPath(
 			BezierCurve(
-				Point(6.500, 22.500, Point.CARTESIAN),
+				Point(grabX, 22.500, Point.CARTESIAN),
 				Point(24.000, 67.000, Point.CARTESIAN),
 				Point(43.250, 72.000, Point.CARTESIAN)
 			)
@@ -115,7 +118,7 @@ object FiveSpecimenV2Paths {
 		.addPath(
 			BezierLine(
 				Point(12.000, 36.000, Point.CARTESIAN),
-				Point(6.500, 36.000, Point.CARTESIAN)
+				Point(grabX, 36.000, Point.CARTESIAN)
 			)
 		)
 		.setZeroPowerAccelerationMultiplier(8.0)
@@ -127,7 +130,7 @@ object FiveSpecimenV2Paths {
 	val scoreThird: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(6.500, 36.000, Point.CARTESIAN),
+				Point(grabX, 36.000, Point.CARTESIAN),
 				Point(43.250, 70.000, Point.CARTESIAN)
 			)
 		)
@@ -152,7 +155,7 @@ object FiveSpecimenV2Paths {
 		.addPath(
 			BezierLine(
 				Point(12.000, 36.000, Point.CARTESIAN),
-				Point(6.500, 36.000, Point.CARTESIAN)
+				Point(grabX, 36.000, Point.CARTESIAN)
 			)
 		)
 		.setZeroPowerAccelerationMultiplier(8.0)
@@ -164,7 +167,7 @@ object FiveSpecimenV2Paths {
 	val scoreFourth: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(6.500, 36.000, Point.CARTESIAN),
+				Point(grabX, 36.000, Point.CARTESIAN),
 				Point(43.250, 68.000, Point.CARTESIAN)
 			)
 		)
@@ -189,7 +192,7 @@ object FiveSpecimenV2Paths {
 		.addPath(
 			BezierLine(
 				Point(12.000, 36.000, Point.CARTESIAN),
-				Point(6.500, 36.000, Point.CARTESIAN)
+				Point(grabX, 36.000, Point.CARTESIAN)
 			)
 		)
 		.setZeroPowerAccelerationMultiplier(8.0)
@@ -201,7 +204,7 @@ object FiveSpecimenV2Paths {
 	val scoreFifth: PathChain = PathBuilder()
 		.addPath(
 			BezierLine(
-				Point(6.500, 36.000, Point.CARTESIAN),
+				Point(grabX, 36.000, Point.CARTESIAN),
 				Point(43.250, 67.000, Point.CARTESIAN)
 			)
 		)
