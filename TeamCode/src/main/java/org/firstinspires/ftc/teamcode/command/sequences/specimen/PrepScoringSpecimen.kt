@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.command.deposit.ExtendDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.PivotDeposit
 import org.firstinspires.ftc.teamcode.command.deposit.SwingDeposit
 import org.firstinspires.ftc.teamcode.command.intake.OpenIntake
+import org.firstinspires.ftc.teamcode.command.intake.TuckIntake
 import org.firstinspires.ftc.teamcode.command.lift.LiftToUntil
 import org.firstinspires.ftc.teamcode.hardware.Positions.Lift
 import org.firstinspires.ftc.teamcode.hardware.Positions.Deposit
@@ -17,21 +18,19 @@ class PrepScoringSpecimen(val lift: Boolean = true, endDelay: Boolean = false) :
 	OpenIntake(),
 	CloseDeposit(),
 
+	TuckIntake(),
+
 	WaitCommand(50),
 
 	ParallelCommandGroup(
 		if (lift) {
 			LiftToUntil(Lift.HIGH_CHAMBER, time = 750)
 		} else InstantCommand(),
-		SequentialCommandGroup(
-			ParallelCommandGroup(
-				SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
-				PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
-			),
-		)
+		SwingDeposit(Deposit.Arm.SCORE_SPECIMEN),
+		PivotDeposit(Deposit.Pivot.SCORE_SPECIMEN)
 	),
 
-	WaitCommand(100),
+	WaitCommand(50),
 
 	ExtendDeposit(),
 

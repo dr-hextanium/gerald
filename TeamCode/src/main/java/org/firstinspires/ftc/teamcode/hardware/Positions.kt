@@ -55,16 +55,20 @@ object Positions {
 //            val TRANSFER_SAMPLE = 20.deg
 //            val SCORE_SAMPLE = 135.deg
 
-            val TRANSFER_SAMPLE = 20.deg//45.deg
+            val EXTENDED_GRAB = 290.deg
+
+            val TRANSFER_SAMPLE = 7.deg//45.deg
             val SCORE_SAMPLE = 110.deg//150.deg
         }
 
         object Pivot {
             val GRAB_SPECIMEN = 355.deg
-            val SCORE_SPECIMEN = 340.deg// 335.deg
+            val SCORE_SPECIMEN = 330.deg// 335.deg
 
 //            val SCORE_SAMPLE = 170.deg
 //            val TRANSFER_SAMPLE = 355.deg
+
+            val EXTENDED_GRAB = 325.deg
 
             val SCORE_SAMPLE = 140.deg
             val TRANSFER_SAMPLE = 290.deg//290.deg

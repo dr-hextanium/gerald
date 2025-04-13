@@ -16,12 +16,12 @@ import org.firstinspires.ftc.teamcode.hardware.Positions
 
 class ScoreSample : SequentialCommandGroup(
 	OpenDeposit(),
+	PivotDeposit(Positions.Deposit.Pivot.TRANSFER_SAMPLE),
 	WaitCommand(150),
 	SequentialCommandGroup(
 		OpenDeposit(),
 		RetractDeposit(),
 		SwingDeposit(Positions.Deposit.Arm.TRANSFER_SAMPLE),
-		PivotDeposit(Positions.Deposit.Pivot.TRANSFER_SAMPLE),
 		PitchIntake(Positions.Intake.Claw.TRANSFER_SAMPLE_PITCH),
 		ParallelCommandGroup(
 			LiftToUntil(-1.0, time = 400),
